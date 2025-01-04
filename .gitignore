@@ -1,0 +1,59 @@
+# Flutter/Dart-specific
+.dart_tool/
+.packages
+.pub-cache/
+build/
+.idea/
+.vscode/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# macOS
+.DS_Store
+
+# Android
+**/android/app/debug/
+**/android/app/profile/
+**/android/app/release/
+**/*.keystore
+
+# iOS
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/Flutter.framework/
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/App.framework/
+**/ios/Flutter/engine/
+**/ios/Flutter/Flutter.podspec.lock
+**/ios/.generated/
+**/ios/Flutter/.last_build_id
+*.xcworkspace
+*.xcodeproj
+!ios/Runner.xcodeproj/project.pbxproj
+*.xcuserstate
+
+# Windows
+**/windows/flutter/
+**/windows/.generated/
+*.pdb
+*.idb
+*.obj
+*.pch
+*.exp
+*.lib
+*.dll
+*.ilk
+*.res
+*.rsp
+*.sdf
+*.exe
+*.suo
+*.ipch
+*.tlog
+*.log
+
+# Web
+**/web/flutter.js
+**/web/manifest.json
+**/web/.last_build_id
