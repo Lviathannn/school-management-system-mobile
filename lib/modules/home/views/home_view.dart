@@ -21,9 +21,11 @@ class HomeView extends StatelessWidget {
     final HomeController controller = Get.find();
 
     return Scaffold(
+      backgroundColor: AppColors.background,
       body: Obx(() => _pages[controller.selectedIndex.value]),
       appBar: AppBar(
         backgroundColor: AppColors.white,
+        surfaceTintColor: AppColors.white,
         toolbarHeight: 65,
         title: Row(
           children: [
