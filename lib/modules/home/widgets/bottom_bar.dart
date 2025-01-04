@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:school_management_system/shared/themes/app_colors.dart';
 import '../controllers/home_controller.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 class BottomNavbar extends StatelessWidget {
   const BottomNavbar({super.key});
@@ -15,16 +17,23 @@ class BottomNavbar extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           child: GNav(
             gap: 8,
-            activeColor: Colors.white,
-            color: Colors.grey,
-            iconSize: 24,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            activeColor: AppColors.primary,
+            color: AppColors.textLight,
+            iconSize: 20,
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             duration: const Duration(milliseconds: 400),
-            tabBackgroundColor: Colors.blue,
+            tabBackgroundColor: AppColors.background,
+            textStyle: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: AppColors.primary),
             tabs: const [
-              GButton(icon: Icons.home, text: 'Home'),
-              GButton(icon: Icons.search, text: 'Search'),
-              GButton(icon: Icons.person, text: 'Profile'),
+              GButton(icon: HugeIcons.strokeRoundedHome11, text: 'Home'),
+              GButton(icon: HugeIcons.strokeRoundedBackpack03, text: 'Murid'),
+              GButton(icon: HugeIcons.strokeRoundedMortarboard01, text: 'Guru'),
+              GButton(icon: HugeIcons.strokeRoundedCalendar02, text: 'Jadwal'),
+              GButton(
+                  icon: HugeIcons.strokeRoundedDollarSquare, text: 'Income'),
             ],
             selectedIndex: controller.selectedIndex.value,
             onTabChange: controller.changeTabIndex,
