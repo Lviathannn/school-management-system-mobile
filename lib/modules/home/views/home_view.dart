@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:school_management_system/modules/home/pages/student_page.dart';
 import 'package:school_management_system/shared/themes/app_colors.dart';
 import 'package:school_management_system/shared/themes/app_images.dart';
 import 'package:school_management_system/shared/themes/app_sizes.dart';
@@ -10,11 +11,15 @@ import '../pages/home_pages.dart';
 import '../widgets/bottom_bar.dart';
 
 class HomeView extends StatelessWidget {
+  HomeView({super.key});
+
   final List<Widget> _pages = [
     const HomePages(),
+    const StudentPage(),
+    const Center(child: Text('Teacher')),
+    const Center(child: Text('Schedule')),
+    const Center(child: Text('Income')),
   ];
-
-  HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,28 +27,37 @@ class HomeView extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: Obx(() => _pages[controller.selectedIndex.value]),
+      body: PageView(
+        allowImplicitScrolling: false,
+        physics: const NeverScrollableScrollPhysics(),
+        controller: controller.pageController,
+        onPageChanged: controller.changeTabIndex,
+        children: _pages,
+      ),
       appBar: AppBar(
         backgroundColor: AppColors.white,
         surfaceTintColor: AppColors.white,
-        toolbarHeight: 65,
+        toolbarHeight: 70,
         title: Row(
           children: [
-            SizedBox(
-              child: Row(
-                children: [
-                  Image.asset(AppImages.logo, width: 30),
-                  const SizedBox(width: 10),
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Halo. Anwar Sanusi!',
-                          style: AppTextStyles.bodyBold),
-                      Text('Kepala Sekolah', style: AppTextStyles.caption),
-                    ],
-                  ),
-                ],
-              ),
+            Row(
+              children: [
+                Image.asset(AppImages.logo, width: 35),
+                const SizedBox(width: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Halo, Anwar Sanusi!',
+                        style: AppTextStyles.bodyBold.copyWith(
+                          fontSize: 16,
+                        )),
+                    Text('Kepala Sekolah',
+                        style: AppTextStyles.body.copyWith(
+                          color: AppColors.textLight,
+                        )),
+                  ],
+                ),
+              ],
             ),
             const Spacer(),
             SizedBox(

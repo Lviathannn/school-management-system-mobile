@@ -35,8 +35,8 @@ class BestStudentList extends StatelessWidget {
                   Text(
                     student.name,
                     style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   Text(
