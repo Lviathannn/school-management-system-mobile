@@ -16,20 +16,19 @@ jobs:
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: 3.13.0
-
-    - name: Clean Flutter cache
-      run: flutter clean
+        flutter-version: 3.27.1
+        cache: false
 
     - name: Verify Flutter and Dart versions
       run: |
         flutter --version
         dart --version
 
+    - name: Clean Flutter cache
+      run: flutter pub cache repair
+
     - name: Install dependencies
-      run: |
-        flutter pub cache repair
-        flutter pub get
+      run: flutter pub get
 
     - name: Build APK
       run: flutter build apk --release
