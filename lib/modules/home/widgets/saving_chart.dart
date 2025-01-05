@@ -1,6 +1,8 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:school_management_system/shared/themes/app_colors.dart';
+import 'package:school_management_system/shared/themes/app_texts.dart';
+import 'package:school_management_system/shared/utils/utils.dart';
 
 class SavingChart extends StatelessWidget {
   const SavingChart({super.key});
@@ -8,18 +10,18 @@ class SavingChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<double> savingData = [
-      5.0,
-      6.5,
-      7.0,
-      7.8,
-      8.0,
-      9.2,
-      9.5,
-      9.8,
-      10.0,
-      9.5,
-      9.0,
-      8.5
+      5000000,
+      6500000,
+      7000000,
+      7800000,
+      8000000,
+      9200000,
+      9500000,
+      9800000,
+      10000000,
+      9500000,
+      9000000,
+      8500000,
     ];
     final List<String> months = [
       'Jan',
@@ -39,20 +41,21 @@ class SavingChart extends StatelessWidget {
     return LineChart(
       LineChartData(
         gridData: FlGridData(
-            show: true,
-            horizontalInterval: 4,
-            verticalInterval: 2,
-            getDrawingHorizontalLine: (value) => const FlLine(
-                  color: AppColors.textLight,
-                  strokeWidth: 0.5,
-                  dashArray: [3],
-                ),
-            drawVerticalLine: true,
-            getDrawingVerticalLine: (value) => const FlLine(
-                  color: AppColors.textLight,
-                  strokeWidth: 0.5,
-                  dashArray: [3],
-                )),
+          show: true,
+          horizontalInterval: 4000000,
+          verticalInterval: 2,
+          getDrawingHorizontalLine: (value) => const FlLine(
+            color: AppColors.textLight,
+            strokeWidth: 0.5,
+            dashArray: [3],
+          ),
+          drawVerticalLine: true,
+          getDrawingVerticalLine: (value) => const FlLine(
+            color: AppColors.textLight,
+            strokeWidth: 0.5,
+            dashArray: [3],
+          ),
+        ),
         borderData: FlBorderData(
           show: false,
         ),
@@ -72,9 +75,20 @@ class SavingChart extends StatelessWidget {
               },
             ),
           ),
-          leftTitles: const AxisTitles(
+          leftTitles: AxisTitles(
             sideTitles: SideTitles(
-              showTitles: false,
+              showTitles: true,
+              interval: 2000000, // Interval label pada sumbu Y (2 juta)
+              getTitlesWidget: (value, meta) {
+                // Menampilkan nilai dalam format jutaan
+                return Text(
+                  '${(value / 1000000).toStringAsFixed(0)}jt',
+                  style: const TextStyle(
+                    fontSize: 10,
+                    color: AppColors.textLight,
+                  ),
+                );
+              },
             ),
           ),
           topTitles:
@@ -115,7 +129,20 @@ class SavingChart extends StatelessWidget {
         minX: 0,
         maxX: savingData.length - 1,
         minY: 0,
-        maxY: 10,
+        maxY: 10000000, // Maksimal nilai pada sumbu Y (10 juta)
+        lineTouchData: LineTouchData(
+          touchTooltipData: LineTouchTooltipData(
+            getTooltipItems: (touchedSpots) => touchedSpots
+                .map((touchedSpot) => LineTooltipItem(
+                      '${months[touchedSpot.x.toInt()]}: ${formatRupiah(
+                        touchedSpot.y.toInt(),
+                      )}',
+                      AppTextStyles.caption.copyWith(
+                          color: AppColors.white, fontWeight: FontWeight.w500),
+                    ))
+                .toList(),
+          ),
+        ),
       ),
     );
   }

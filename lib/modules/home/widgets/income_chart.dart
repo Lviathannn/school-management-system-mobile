@@ -42,9 +42,36 @@ class IncomeChart extends StatelessWidget {
               showTitles: false,
             ),
           ),
-          leftTitles: const AxisTitles(
+          leftTitles: AxisTitles(
             sideTitles: SideTitles(
-              showTitles: false,
+              showTitles: true,
+              interval: 500000, // Interval 500 ribu
+              getTitlesWidget: (value, meta) {
+                if (value % 500000 == 0) {
+                  double valueInt = value / 1000;
+
+                  if (valueInt >= 1000) {
+                    return Text(
+                      '${(valueInt / 1000)}jt',
+                      style: const TextStyle(
+                        fontSize: 10,
+                        color: AppColors.textLight,
+                      ),
+                      maxLines: 1,
+                    );
+                  } else {
+                    return Text(
+                      '${(value / 1000).toStringAsFixed(0)}k',
+                      style: const TextStyle(
+                        fontSize: 10,
+                        color: AppColors.textLight,
+                      ),
+                      maxLines: 1,
+                    );
+                  }
+                }
+                return const SizedBox.shrink();
+              },
             ),
           ),
           bottomTitles: AxisTitles(
@@ -65,15 +92,34 @@ class IncomeChart extends StatelessWidget {
                   'Nov',
                   'Dec',
                 ];
-                return Text(
-                  months[value.toInt()],
-                  style: AppTextStyles.caption.copyWith(fontSize: 10),
-                );
+                if (value.toInt() < months.length) {
+                  return Text(
+                    months[value.toInt()],
+                    style: AppTextStyles.caption.copyWith(fontSize: 10),
+                  );
+                }
+                return const SizedBox.shrink();
               },
             ),
           ),
         ),
-        gridData: const FlGridData(show: false),
+        gridData: FlGridData(
+          show: true,
+          horizontalInterval: 500000,
+          verticalInterval: 2,
+          getDrawingHorizontalLine: (value) => const FlLine(
+            color: AppColors.textLight,
+            strokeWidth: 0.5,
+            dashArray: [3],
+          ),
+          drawVerticalLine: true,
+          drawHorizontalLine: true,
+          getDrawingVerticalLine: (value) => const FlLine(
+            color: AppColors.textLight,
+            strokeWidth: 0.5,
+            dashArray: [3],
+          ),
+        ),
         borderData: FlBorderData(show: false),
         barTouchData: BarTouchData(
           touchTooltipData: BarTouchTooltipData(
@@ -102,6 +148,9 @@ class IncomeChart extends StatelessWidget {
             },
           ),
         ),
+        minY: 0, // Nilai minimum sumbu Y
+        maxY: (incomeData.reduce((a, b) => a > b ? a : b) / 500000).ceil() *
+            500000, // Nilai maksimum sumbu Y
       ),
     );
   }
