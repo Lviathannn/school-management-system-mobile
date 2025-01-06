@@ -21,11 +21,11 @@ class BottomNavbar extends StatelessWidget {
     const tabBackgroundColor = AppColors.background;
     const activeColor = AppColors.primary;
     const iconColor = AppColors.textLight;
-    const iconSize = 20.0;
+    const iconSize = 22.0;
 
     const tabs = [
       GButton(icon: HugeIcons.strokeRoundedHome11, text: 'Home'),
-      GButton(icon: HugeIcons.strokeRoundedBackpack03, text: 'Murid'),
+      GButton(icon: HugeIcons.strokeRoundedBackpack03, text: 'Siswa'),
       GButton(icon: HugeIcons.strokeRoundedMortarboard01, text: 'Guru'),
       GButton(icon: HugeIcons.strokeRoundedCalendar02, text: 'Jadwal'),
       GButton(icon: HugeIcons.strokeRoundedDollarSquare, text: 'Income'),

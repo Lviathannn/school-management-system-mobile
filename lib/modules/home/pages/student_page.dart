@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:school_management_system/modules/home/widgets/student_content.dart';
 import 'package:school_management_system/shared/themes/app_colors.dart';
 
 class StudentPage extends StatelessWidget {
@@ -18,9 +19,8 @@ class StudentPage extends StatelessWidget {
             labelColor: AppColors.primary,
             indicatorColor: AppColors.primary,
             overlayColor: WidgetStateProperty.all(Colors.transparent),
-
             tabs: const [
-              Tab(text: 'Murid'),
+              Tab(text: 'Siswa'),
               Tab(text: 'Tabungan'),
               Tab(text: 'Nilai'),
             ],
@@ -28,7 +28,7 @@ class StudentPage extends StatelessWidget {
         ),
         body: const TabBarView(
           children: [
-            Center(child: Text('Content Murid')),
+            StudentContent(),
             Center(child: Text('Content Tabungan')),
             Center(child: Text('Content Nilai')),
           ],

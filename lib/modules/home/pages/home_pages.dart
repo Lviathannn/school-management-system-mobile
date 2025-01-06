@@ -178,7 +178,7 @@ class HomePages extends StatelessWidget {
                 child: Column(
                   children: [
                     const TitleIcon(
-                      title: 'Murid Berprestasi',
+                      title: 'Siswa Berprestasi',
                       icon: HugeIcons.strokeRoundedChampion,
                       color: AppColors.yellow,
                       subtitle: 'Dalam 1 Tahun',
