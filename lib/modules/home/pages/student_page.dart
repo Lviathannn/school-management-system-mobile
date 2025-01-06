@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:school_management_system/modules/home/widgets/point_content.dart';
+import 'package:school_management_system/modules/home/widgets/saving_content.dart';
 import 'package:school_management_system/modules/home/widgets/student_content.dart';
 import 'package:school_management_system/shared/themes/app_colors.dart';
 
@@ -29,8 +31,7 @@ class StudentPage extends StatelessWidget {
         body: const TabBarView(
           children: [
             StudentContent(),
-            Center(child: Text('Content Tabungan')),
-            Center(child: Text('Content Nilai')),
+            SavingContent(), PointContent()
           ],
         ),
       ),
