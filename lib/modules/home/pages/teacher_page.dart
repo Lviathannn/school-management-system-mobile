@@ -4,8 +4,8 @@ import 'package:school_management_system/shared/themes/app_colors.dart';
 import 'package:school_management_system/shared/themes/app_sizes.dart';
 import 'package:school_management_system/shared/themes/app_texts.dart';
 
-class StudentContent extends StatelessWidget {
-  const StudentContent({super.key});
+class TeacherPage extends StatelessWidget {
+  const TeacherPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class StudentContent extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'List Seluruh Siswa',
+                  'List Seluruh Guru',
                   style: AppTextStyles.body
                       .copyWith(fontWeight: FontWeight.w500, fontSize: 16),
                 ),
@@ -28,7 +28,7 @@ class StudentContent extends StatelessWidget {
                     style: ButtonStyle(
                       shape: WidgetStateProperty.all(
                         RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(4),
                         ),
                       ),
                       backgroundColor:
@@ -84,7 +84,7 @@ class StudentContent extends StatelessWidget {
                           const CircleAvatar(
                             radius: 20,
                             backgroundImage:
-                                AssetImage('assets/images/boy.png'),
+                                AssetImage('assets/images/teacher-man.png'),
                             backgroundColor: AppColors.background,
                           ),
                           const SizedBox(width: 10),
@@ -167,21 +167,20 @@ class StudentContent extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Nama Orangtua',
+                            'Pendidikan Terakhir',
                             style: AppTextStyles.caption.copyWith(
                               color: AppColors.textLight,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                           Text(
-                            'Anwar Sanusi',
+                            'S1',
                             style: AppTextStyles.body.copyWith(
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                         ],
                       ),
-
                     ],
                   ),
                   const SizedBox(height: 20),

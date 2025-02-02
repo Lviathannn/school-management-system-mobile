@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:school_management_system/modules/home/pages/income_page.dart';
 import 'package:school_management_system/modules/home/pages/student_page.dart';
+import 'package:school_management_system/modules/home/pages/teacher_page.dart';
 import 'package:school_management_system/shared/themes/app_colors.dart';
 import 'package:school_management_system/shared/themes/app_images.dart';
 import 'package:school_management_system/shared/themes/app_sizes.dart';
@@ -16,9 +18,8 @@ class HomeView extends StatelessWidget {
   final List<Widget> _pages = [
     const HomePages(),
     const StudentPage(),
-    const Center(child: Text('Teacher')),
-    const Center(child: Text('Schedule')),
-    const Center(child: Text('Income')),
+    const TeacherPage(),
+    const IncomePage(),
   ];
 
   @override

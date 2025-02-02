@@ -31,7 +31,8 @@ class StudentPage extends StatelessWidget {
         body: const TabBarView(
           children: [
             StudentContent(),
-            SavingContent(), PointContent()
+            SavingContent(),
+            PointContent(),
           ],
         ),
       ),
