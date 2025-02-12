@@ -27,7 +27,8 @@ class TitleBanner extends StatelessWidget {
       width: double.infinity,
       child: Text(
         text,
-        style: AppTextStyles.heading,
+        style: AppTextStyles.heading
+            .copyWith(fontWeight: FontWeight.w600, fontSize: 20),
       ),
     );
   }

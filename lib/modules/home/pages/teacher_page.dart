@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:school_management_system/shared/themes/app_colors.dart';
+import 'package:school_management_system/shared/themes/app_images.dart';
 import 'package:school_management_system/shared/themes/app_sizes.dart';
 import 'package:school_management_system/shared/themes/app_texts.dart';
+import 'package:school_management_system/shared/widgets/information.dart';
 
 class TeacherPage extends StatelessWidget {
   const TeacherPage({super.key});
@@ -28,7 +31,7 @@ class TeacherPage extends StatelessWidget {
                     style: ButtonStyle(
                       shape: WidgetStateProperty.all(
                         RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(6),
                         ),
                       ),
                       backgroundColor:
@@ -84,7 +87,7 @@ class TeacherPage extends StatelessWidget {
                           const CircleAvatar(
                             radius: 20,
                             backgroundImage:
-                                AssetImage('assets/images/teacher-man.png'),
+                                AssetImage(AppImages.man),
                             backgroundColor: AppColors.background,
                           ),
                           const SizedBox(width: 10),
@@ -96,6 +99,7 @@ class TeacherPage extends StatelessWidget {
                                 style: AppTextStyles.body
                                     .copyWith(fontWeight: FontWeight.w600),
                               ),
+                              const SizedBox(height: 5),
                               Text(
                                 '3207180110010001',
                                 style: AppTextStyles.caption.copyWith(
@@ -124,45 +128,22 @@ class TeacherPage extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Tanggal Lahir',
-                            style: AppTextStyles.caption.copyWith(
-                              color: AppColors.textLight,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Text(
-                            '01 Oktober 2001',
-                            style: AppTextStyles.body.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
+                      Information(
+                        title: "Tanggal Lahir",
+                        child: Text(
+                          "01 Oktober 2001",
+                          style: AppTextStyles.bodyBold,
+                        ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Pendidikan Terakhir',
-                            style: AppTextStyles.caption.copyWith(
-                              color: AppColors.textLight,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Text(
-                            'S1',
-                            style: AppTextStyles.body.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
+                      Information(
+                        title: "Pendidikan",
+                        child: Text(
+                          "Strata 1",
+                          style: AppTextStyles.bodyBold,
+                        ),
                       ),
                     ],
                   ),
@@ -171,7 +152,9 @@ class TeacherPage extends StatelessWidget {
                     width: double.infinity,
                     height: 30,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.toNamed('/teacher-detail/1');
+                      },
                       style: ButtonStyle(
                         backgroundColor:
                             WidgetStateProperty.all(AppColors.primary),

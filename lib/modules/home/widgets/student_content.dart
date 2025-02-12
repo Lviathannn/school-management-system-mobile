@@ -4,6 +4,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:school_management_system/shared/themes/app_colors.dart';
 import 'package:school_management_system/shared/themes/app_sizes.dart';
 import 'package:school_management_system/shared/themes/app_texts.dart';
+import 'package:school_management_system/shared/widgets/information.dart';
 
 class StudentContent extends StatelessWidget {
   const StudentContent({super.key});
@@ -97,6 +98,7 @@ class StudentContent extends StatelessWidget {
                                 style: AppTextStyles.body
                                     .copyWith(fontWeight: FontWeight.w600),
                               ),
+                              const SizedBox(height: 5),
                               Text(
                                 '3207180110010001',
                                 style: AppTextStyles.caption.copyWith(
@@ -125,46 +127,22 @@ class StudentContent extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Tanggal Lahir',
-                            style: AppTextStyles.caption.copyWith(
-                              color: AppColors.textLight,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Text(
-                            '01 Oktober 2001',
-                            style: AppTextStyles.body.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Nama Orangtua',
-                            style: AppTextStyles.caption.copyWith(
-                              color: AppColors.textLight,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Text(
+                      Information(
+                          title: "Tanggal Lahir",
+                          child: Text(
+                            '17 Agustus 2003',
+                            style: AppTextStyles.bodyBold,
+                          )),
+                      Information(
+                        title: "Orang Tua",
+                        child: Text(
                             'Anwar Sanusi',
-                            style: AppTextStyles.body.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
+                          style: AppTextStyles.bodyBold,
+                        ),
                       ),
-
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -173,7 +151,7 @@ class StudentContent extends StatelessWidget {
                     height: 30,
                     child: TextButton(
                       onPressed: () {
-                        Get.toNamed('/student-detail:1');
+                        Get.toNamed('/student-detail/1');
                       },
                       style: ButtonStyle(
                         backgroundColor:
