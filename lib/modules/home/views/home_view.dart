@@ -17,7 +17,7 @@ class HomeView extends StatelessWidget {
 
   final List<Widget> _pages = [
     const HomePages(),
-    const StudentPage(),
+    StudentPage(),
     const TeacherPage(),
     const IncomePage(),
   ];

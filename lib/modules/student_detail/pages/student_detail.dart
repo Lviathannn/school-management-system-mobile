@@ -219,11 +219,13 @@ class StudentDetail extends StatelessWidget {
                         icon: HugeIcons.strokeRoundedBackpack01,
                         color: AppColors.emerald,
                       ),
+                      SizedBox(height: 10),
                       Attachment(
                         title: "Kartu Keluarga",
                         icon: HugeIcons.strokeRoundedIdentityCard,
                         color: AppColors.indigo,
                       ),
+                      SizedBox(height: 10),
                       Attachment(
                         title: "KTP Orang Tua",
                         icon: HugeIcons.strokeRoundedManager,

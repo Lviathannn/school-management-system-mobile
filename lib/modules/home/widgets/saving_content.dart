@@ -12,52 +12,10 @@ class SavingContent extends StatelessWidget {
     return CustomScrollView(
       slivers: [
         SliverPadding(
-          padding: const EdgeInsets.all(AppSizes.paddingMedium),
-          sliver: SliverToBoxAdapter(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'List Tabungan',
-                  style: AppTextStyles.body
-                      .copyWith(fontWeight: FontWeight.w500, fontSize: 16),
-                ),
-                TextButton(
-                    onPressed: () {},
-                    style: ButtonStyle(
-                      shape: WidgetStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      backgroundColor:
-                          WidgetStateProperty.all(AppColors.primary),
-                    ),
-                    child: Row(
-                      children: [
-                        const HugeIcon(
-                            icon: HugeIcons.strokeRoundedFilter,
-                            color: AppColors.white,
-                            size: 20),
-                        const SizedBox(width: 5),
-                        Text(
-                          'Filter',
-                          style: AppTextStyles.caption.copyWith(
-                            color: AppColors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )
-                      ],
-                    )),
-              ],
-            ),
-          ),
-        ),
-        SliverPadding(
           padding:
-              const EdgeInsets.symmetric(horizontal: AppSizes.paddingMedium),
+              const EdgeInsets.symmetric(
+              horizontal: AppSizes.paddingMedium,
+              vertical: AppSizes.paddingMedium),
           sliver:
               SliverList(delegate: SliverChildBuilderDelegate((context, index) {
             return Container(
