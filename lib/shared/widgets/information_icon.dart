@@ -33,7 +33,7 @@ class InformationIcon extends StatelessWidget {
             size: 22,
           ),
         ),
-        const SizedBox(width: 10),
+        const SizedBox(width: 20),
         Row(
           children: [
             Column(

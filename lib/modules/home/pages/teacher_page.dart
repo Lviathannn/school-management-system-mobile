@@ -127,24 +127,7 @@ class TeacherPage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Jenis Kelamin',
-                            style: AppTextStyles.caption.copyWith(
-                              color: AppColors.textLight,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Text(
-                            'Laki-laki',
-                            style: AppTextStyles.body.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
+                      
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

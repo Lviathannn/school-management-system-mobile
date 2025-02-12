@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:school_management_system/shared/themes/app_colors.dart';
 import 'package:school_management_system/shared/themes/app_sizes.dart';
@@ -131,24 +132,6 @@ class StudentContent extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Jenis Kelamin',
-                            style: AppTextStyles.caption.copyWith(
-                              color: AppColors.textLight,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Text(
-                            'Laki-laki',
-                            style: AppTextStyles.body.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
                             'Tanggal Lahir',
                             style: AppTextStyles.caption.copyWith(
                               color: AppColors.textLight,
@@ -189,7 +172,9 @@ class StudentContent extends StatelessWidget {
                     width: double.infinity,
                     height: 30,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.toNamed('/student-detail:1');
+                      },
                       style: ButtonStyle(
                         backgroundColor:
                             WidgetStateProperty.all(AppColors.primary),

@@ -19,7 +19,7 @@ class IncomePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'List Pendapatan & Pengeluaran',
+                  'List Keuangan',
                   style: AppTextStyles.body
                       .copyWith(fontWeight: FontWeight.w500, fontSize: 16),
                 ),
