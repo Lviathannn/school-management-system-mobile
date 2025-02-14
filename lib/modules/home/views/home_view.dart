@@ -4,6 +4,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:school_management_system/modules/home/pages/income_page.dart';
 import 'package:school_management_system/modules/home/pages/student_page.dart';
 import 'package:school_management_system/modules/home/pages/teacher_page.dart';
+import 'package:school_management_system/routes/routes.dart';
 import 'package:school_management_system/shared/themes/app_colors.dart';
 import 'package:school_management_system/shared/themes/app_images.dart';
 import 'package:school_management_system/shared/themes/app_sizes.dart';
@@ -77,7 +78,9 @@ class HomeView extends StatelessWidget {
                   color: AppColors.textLight,
                   size: AppSizes.iconSizeSmall,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Get.toNamed(AppRoutes.PROFILE);
+                },
               ),
             ),
           ],

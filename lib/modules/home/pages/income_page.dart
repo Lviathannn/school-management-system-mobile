@@ -210,6 +210,11 @@ class IncomePage extends StatelessWidget {
       ),
       isScrollControlled: true,
       barrierColor: Colors.black.withOpacity(0.5),
+      transitionAnimationController: AnimationController(
+        vsync: Navigator.of(context),
+        animationBehavior: AnimationBehavior.normal,
+        duration: const Duration(milliseconds: 300),
+      ),
       builder: (BuildContext context) {
         return Container(
           width: double.infinity,

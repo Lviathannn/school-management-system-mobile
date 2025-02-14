@@ -1,18 +1,26 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomeController extends GetxController {
-  var selectedIndex = 0.obs; // Index tab yang aktif
-  late PageController pageController; // PageController untuk mengatur PageView
+  var selectedIndex = 0.obs;
+  late PageController pageController; 
 
   @override
   void onInit() {
     super.onInit();
+    final supabase = Supabase.instance.client;
+
+    if (supabase.auth.currentSession == null) {
+      Future.delayed(Duration.zero, () {
+        Get.offAllNamed('/login');
+      });
+    }
+
     pageController = PageController(
-        initialPage: selectedIndex.value); // Inisialisasi PageView
+        initialPage: selectedIndex.value); 
   }
 
-  // Sinkronisasi index tab Google Navbar dengan PageView
   void changeTabIndex(int index) {
     selectedIndex.value = index;
   }
@@ -20,7 +28,7 @@ class HomeController extends GetxController {
   @override
   void onClose() {
     pageController
-        .dispose(); // Bersihkan controller untuk menghindari memory leak
+        .dispose(); 
     super.onClose();
   }
 }

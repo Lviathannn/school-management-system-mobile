@@ -2,20 +2,19 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:school_management_system/routes/routes.dart';
+import 'package:school_management_system/modules/auth/controllers/auth_controller.dart';
+import 'package:school_management_system/modules/auth/controllers/validation_controller.dart';
 import 'package:school_management_system/shared/themes/app_colors.dart';
 import 'package:school_management_system/shared/themes/app_images.dart';
 import 'package:school_management_system/shared/themes/app_texts.dart';
 
-class LoginPages extends StatefulWidget {
-  const LoginPages({super.key});
+class LoginPages extends StatelessWidget {
+  LoginPages({super.key});
 
-  @override
-  // ignore: library_private_types_in_public_api
-  _LoginPagesState createState() => _LoginPagesState();
-}
+  final AuthController authController = Get.put(AuthController());
+  final ValidationController validationController =
+      Get.put(ValidationController());
 
-class _LoginPagesState extends State<LoginPages> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +69,7 @@ class _LoginPagesState extends State<LoginPages> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
-                              "Username",
+                              "Email",
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -78,28 +77,39 @@ class _LoginPagesState extends State<LoginPages> {
                               ),
                             ),
                             const SizedBox(height: 10),
-                            TextFormField(
-                              cursorColor: AppColors.primary,
-                              decoration: InputDecoration(
-                                errorStyle: const TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                hintText: 'Masukkan username anda!',
-                                hintStyle: const TextStyle(
-                                  color: AppColors.textLight,
+                            Obx(
+                              () => TextFormField(
+                                cursorColor: AppColors.primary,
+                                onChanged: (value) {
+                                  validationController.email.value = value;
+                                },
+                                style: const TextStyle(
+                                  color: AppColors.text,
                                   fontSize: 14,
                                 ),
-                                filled: true,
-                                fillColor: Colors.grey[100],
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 16, horizontal: 16),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  borderSide: BorderSide.none,
+                                decoration: InputDecoration(
+                                  errorText: validationController
+                                          .emailError.value.isEmpty
+                                      ? null
+                                      : validationController.emailError.value,
+                                  errorStyle: const TextStyle(
+                                    color: AppColors.red,
+                                  ),
+                                  hintText: 'Masukan email anda!',
+                                  hintStyle: const TextStyle(
+                                    color: AppColors.textLight,
+                                    fontSize: 14,
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.grey[100],
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide.none,
+                                  ),
                                 ),
+                                keyboardType: TextInputType.emailAddress,
                               ),
-                              keyboardType: TextInputType.name,
-                            ),
+                            )
                           ],
                         ),
                         const SizedBox(height: 10),
@@ -115,28 +125,38 @@ class _LoginPagesState extends State<LoginPages> {
                               ),
                             ),
                             const SizedBox(height: 10),
-                            TextFormField(
-                              cursorColor: AppColors.primary,
-                              decoration: InputDecoration(
-                                errorStyle: const TextStyle(
-                                  fontWeight: FontWeight.w500,
+                            Obx(
+                              () => TextFormField(
+                                cursorColor: AppColors.primary,
+                                onChanged: (value) {
+                                  validationController.password.value = value;
+                                },
+                                decoration: InputDecoration(
+                                  errorStyle: const TextStyle(
+                                    color: AppColors.red,
+                                  ),
+                                  errorText: validationController
+                                          .passwordError.value.isEmpty
+                                      ? null
+                                      : validationController
+                                          .passwordError.value,
+                                  hintText: 'Masukan password anda!',
+                                  hintStyle: const TextStyle(
+                                    color: AppColors.textLight,
+                                    fontSize: 14,
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.grey[100],
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 16, horizontal: 16),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide.none,
+                                  ),
                                 ),
-                                hintText: 'Masukkan password anda!',
-                                hintStyle: const TextStyle(
-                                  color: AppColors.textLight,
-                                  fontSize: 14,
-                                ),
-                                filled: true,
-                                fillColor: Colors.grey[100],
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 16, horizontal: 16),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  borderSide: BorderSide.none,
-                                ),
+                                obscureText: true,
                               ),
-                              obscureText: true,
-                            ),
+                            )
                           ],
                         ),
                       ],
@@ -146,10 +166,13 @@ class _LoginPagesState extends State<LoginPages> {
                 const SizedBox(height: 30),
                 SizedBox(
                   width: double.infinity,
-                  height: 40,
+                  height: 45,
                   child: TextButton(
                     onPressed: () {
-                      Get.offNamed(AppRoutes.HOME);
+                      authController.login(
+                        validationController.email.value,
+                        validationController.password.value,
+                      );
                     },
                     style: ButtonStyle(
                       backgroundColor:
@@ -159,7 +182,7 @@ class _LoginPagesState extends State<LoginPages> {
                       ),
                       shape: WidgetStateProperty.all(
                         RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                     ),
@@ -173,6 +196,7 @@ class _LoginPagesState extends State<LoginPages> {
                     ),
                   ),
                 ),
+                
                 const SizedBox(height: 20),
                 const Center(
                   child: Text(

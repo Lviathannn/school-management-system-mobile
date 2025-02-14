@@ -105,7 +105,7 @@ class StudentContent extends StatelessWidget {
                   const SizedBox(height: 20),
                   SizedBox(
                     width: double.infinity,
-                    height: 30,
+                    height: 40,
                     child: TextButton(
                       onPressed: () {
                         Get.toNamed('/student-detail/1');
