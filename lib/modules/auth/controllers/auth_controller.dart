@@ -6,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthController extends GetxController {
   final supabase = Supabase.instance.client;
+  final isLoading = RxBool(false);
 
   @override
   void onInit() {
@@ -23,6 +24,7 @@ class AuthController extends GetxController {
 
   Future<void> login(String email, String password) async {
     try {
+      isLoading.value = true;
       final response = await supabase.auth
           .signInWithPassword(email: email, password: password);
       if (response.session != null) {
@@ -86,6 +88,8 @@ class AuthController extends GetxController {
           ),
         ),
       );
+    } finally {
+      isLoading.value = false;
     }
   }
 

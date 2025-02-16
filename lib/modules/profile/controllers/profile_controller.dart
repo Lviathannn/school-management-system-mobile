@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:school_management_system/modules/profile/models/user_model.dart';
+import 'package:school_management_system/modules/profile/services/image_profile_service.dart';
 import 'package:school_management_system/routes/routes.dart';
 import 'package:school_management_system/shared/themes/app_colors.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfileController extends GetxController {
   final supabase = Supabase.instance.client;
+  final currentUser = Supabase.instance.client.auth.currentUser;
+  final imageProfile = Rxn<String>();
+  final user = Rxn<UserModel>();
+  final _imageProfileService = ImageProfileService();
+  final isLoading = false.obs;
+  final isFetching = false.obs;
 
   @override
   void onInit() {
     super.onInit();
     _checkAuthStatus();
+    fetchImage();
   }
 
   void _checkAuthStatus() {
@@ -19,8 +28,24 @@ class ProfileController extends GetxController {
     } else {}
   }
 
+  Future<UserModel?> fetchImage() async {
+    try {
+      isFetching.value = true;
+      final response = await _imageProfileService.getUserImageProfile();
+      if (response != null) {
+        user.value = response;
+      }
+      return response;
+    } catch (e) {
+      return null;
+    } finally {
+      isFetching.value = false;
+    }
+  }
+
   Future<void> logout() async {
     try {
+      isLoading.value = true;
       await supabase.auth.signOut();
 
       Get.snackbar("Logout Berhasil", "Anda telah keluar!",
@@ -47,6 +72,8 @@ class ProfileController extends GetxController {
               fontSize: 14,
             ),
           ));
+    } finally {
+      isLoading.value = false;
     }
-  }
+  } 
 }

@@ -5,6 +5,7 @@ import 'package:school_management_system/modules/profile/controllers/profile_con
 import 'package:school_management_system/shared/themes/app_colors.dart';
 import 'package:school_management_system/shared/themes/app_images.dart';
 import 'package:school_management_system/shared/themes/app_texts.dart';
+import 'package:intl/intl.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -49,7 +50,10 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ProfileController profileController = Get.find();
+    final ProfileController profileController = Get.put(
+      ProfileController(),
+    );
+    final currentUser = profileController.currentUser;
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -61,34 +65,43 @@ class ProfilePage extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(
-                width: 80,
-                height: 80,
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundImage: AssetImage(AppImages.man),
-                ),
-              ),
+              SizedBox(
+                  width: 100,
+                  height: 100,
+                  child: Obx(() {
+                    return CircleAvatar(
+                      backgroundColor: AppColors.primary.withOpacity(0.1),
+                      radius: 50,
+                      backgroundImage: profileController.user.value!.url.isEmpty
+                          ? const AssetImage(
+                              AppImages.man,
+                            )
+                          : NetworkImage(
+                              profileController.user.value!.url,
+                            ),
+                    );
+                  })),
               const SizedBox(height: 10),
-              Text(
-                "Anwar Sanusi",
-                style: AppTextStyles.bodyBold.copyWith(
-                  fontSize: 20,
-                  color: AppColors.text,
-                ),
-              ),
+              Obx(() => Text(
+                    profileController.user.value?.name ?? "-",
+                    style: AppTextStyles.bodyBold.copyWith(
+                      fontSize: 20,
+                      color: AppColors.text,
+                    ),
+                  )),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Active Since -",
+                    "Aktif Sejak - ",
                     style: AppTextStyles.caption.copyWith(
                       fontSize: 12,
                     ),
                   ),
                   Text(
-                    "Jan, 2025",
+                    DateFormat("MMM yyyy")
+                        .format(DateTime.parse(currentUser!.createdAt)),
                     style: AppTextStyles.body.copyWith(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
@@ -104,7 +117,7 @@ class ProfilePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                "Personal Information",
+                "Informasi Pribadi",
                 style: AppTextStyles.body.copyWith(
                   fontSize: 14,
                 ),
@@ -137,7 +150,7 @@ class ProfilePage extends StatelessWidget {
                       ],
                     ),
                     Text(
-                      "anwar.sanusi@gmail.com",
+                      currentUser.email ?? "",
                       style: AppTextStyles.caption.copyWith(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
@@ -160,24 +173,70 @@ class ProfilePage extends StatelessWidget {
                     Row(
                       children: [
                         const HugeIcon(
-                          icon: HugeIcons.strokeRoundedAiPhone01,
+                          icon: HugeIcons.strokeRoundedSmartPhone01,
                           color: AppColors.textLight,
                           size: 20,
                         ),
                         const SizedBox(width: 5),
                         Text(
-                          "Telephone",
+                          "Kontak",
                           style: AppTextStyles.caption.copyWith(
                             fontSize: 12,
                           ),
                         ),
                       ],
                     ),
-                    Text(
-                      "08195280343",
-                      style: AppTextStyles.caption.copyWith(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
+                    Obx(
+                      () => Text(
+                        profileController.user.value?.phone ?? "-",
+                        style: AppTextStyles.caption.copyWith(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 5),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: AppColors.background,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const HugeIcon(
+                          icon: HugeIcons.strokeRoundedLocation01,
+                          color: AppColors.textLight,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          "Alamat",
+                          style: AppTextStyles.caption.copyWith(
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(width: 20),
+                    Expanded(
+                      child: Obx(
+                        () => Text(profileController.user.value?.address ?? "-",
+                            style: AppTextStyles.caption.copyWith(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            textAlign: TextAlign.end,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: true),
                       ),
                     ),
                   ],
@@ -198,8 +257,7 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                Get.dialog(
-                  AlertDialog(
+                Get.dialog(AlertDialog(
                   backgroundColor: AppColors.white,
                   title: const Text(
                     "Keluar",
@@ -224,56 +282,90 @@ class ProfilePage extends StatelessWidget {
                           Expanded(
                             child: SizedBox(
                               height: 40,
-                              child: TextButton(
-                                style: TextButton.styleFrom(
-                                  surfaceTintColor: AppColors.white,
-                                  overlayColor:
-                                      AppColors.primary.withOpacity(0.1),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
+                                child: Obx(
+                                  () => TextButton(
+                                    style: TextButton.styleFrom(
+                                      surfaceTintColor: AppColors.white,
+                                      overlayColor:
+                                          AppColors.primary.withOpacity(0.1),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      backgroundColor:
+                                          AppColors.textLight.withOpacity(0.1),
+                                    ),
+                                    onPressed: profileController.isLoading.value
+                                        ? null
+                                        : () {
+                                            Get.back();
+                                          },
+                                    child: profileController.isLoading.value
+                                        ? const SizedBox(
+                                            width: 20,
+                                            height: 20,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                              color: AppColors.primary,
+                                            ),
+                                          )
+                                        : const Text(
+                                            "Batal",
+                                            style: TextStyle(
+                                              color: AppColors.text,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
                                   ),
-                                  backgroundColor:
-                                      AppColors.textLight.withOpacity(0.1),
-                                ),
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                child: const Text(
-                                  "Cancel",
-                                  style: TextStyle(
-                                    color: AppColors.primary,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
+                                )
                             ),
                           ),
                           const SizedBox(width: 10),
                           Expanded(
                             child: SizedBox(
                               height: 40,
-                              child: TextButton(
-                                style: TextButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  backgroundColor: AppColors.primary,
-                                  foregroundColor: Colors.white, // Warna teks
-                                ),
-                                onPressed: () {
-                                  ProfileController().logout();
-                                },
-                                child: const Text("Logout"),
-                              ),
+                              child: Obx(() => TextButton(
+                                    style: TextButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      backgroundColor: profileController
+                                              .isLoading.value
+                                          ? AppColors.primary.withOpacity(0.5)
+                                          : AppColors.primary,
+                                      foregroundColor:
+                                          Colors.white, // Warna teks
+                                    ),
+                                    onPressed: profileController.isLoading.value
+                                        ? null
+                                        : () {
+                                            profileController.logout();
+                                          },
+                                    child: profileController.isLoading.value
+                                        ? const SizedBox(
+                                            width: 20,
+                                            height: 20,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                              color: AppColors.white,
+                                            ),
+                                          )
+                                        : const Text(
+                                            "Keluar",
+                                            style: TextStyle(
+                                              color: AppColors.white,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                  )),
                             ),
-                          ),
+                          )
                         ],
                       ),
                     ),
                   ],
-                )
-                );
+                ));
               },
               child: Text(
                 "Keluar",

@@ -165,35 +165,60 @@ class LoginPages extends StatelessWidget {
                 ),
                 const SizedBox(height: 30),
                 SizedBox(
-                  width: double.infinity,
-                  height: 45,
-                  child: TextButton(
-                    onPressed: () {
-                      authController.login(
-                        validationController.email.value,
-                        validationController.password.value,
-                      );
-                    },
-                    style: ButtonStyle(
-                      backgroundColor:
-                          WidgetStateProperty.all(AppColors.primary),
-                      shape: WidgetStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                    width: double.infinity,
+                    height: 45,
+                    child: Obx(
+                      () => TextButton(
+                        onPressed: authController.isLoading.value ||
+                                validationController
+                                    .emailError.value.isNotEmpty ||
+                                validationController
+                                    .passwordError.value.isNotEmpty
+                            ? null
+                            : () {
+                                authController.login(
+                                  validationController.email.value,
+                                  validationController.password.value,
+                                );
+                              },
+                        style: ButtonStyle(
+                          
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            authController.isLoading.value ||
+                                    validationController
+                                        .emailError.value.isNotEmpty ||
+                                    validationController
+                                        .passwordError.value.isNotEmpty
+                                ? AppColors.primary.withOpacity(
+                                    0.5) // Disabled (opacity dikurangi)
+                                : AppColors.primary, // Aktif (warna normal)
+                          ),
+                          shape: WidgetStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
                         ),
+                        child: authController.isLoading.value
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    Colors.white,
+                                  ),
+                                ),
+                              )
+                            : const Text(
+                                "Masuk",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
                       ),
-                    ),
-                    child: const Text(
-                      "Masuk",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ),
-                
+                    )),
                 const SizedBox(height: 20),
                 const Center(
                   child: Text(
