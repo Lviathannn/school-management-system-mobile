@@ -177,9 +177,6 @@ class LoginPages extends StatelessWidget {
                     style: ButtonStyle(
                       backgroundColor:
                           WidgetStateProperty.all(AppColors.primary),
-                      padding: WidgetStateProperty.all(
-                        const EdgeInsets.symmetric(vertical: 16),
-                      ),
                       shape: WidgetStateProperty.all(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),

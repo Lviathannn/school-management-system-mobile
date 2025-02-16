@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -201,28 +200,83 @@ class ProfilePage extends StatelessWidget {
               onPressed: () {
                 Get.dialog(
                   AlertDialog(
-                    title: const Text("Logout"),
-                    content: const Text("Are you sure you want to logout?"),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        child: const Text("Cancel"),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          ProfileController().logout();
-                          log("Logout");
-                        },
-                        child: const Text("Logout"),
-                      ),
-                    ],
+                  backgroundColor: AppColors.white,
+                  title: const Text(
+                    "Keluar",
+                    style: TextStyle(
+                      color: AppColors.text,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
+                    ),
                   ),
+                  content: const Text(
+                    "Apakah anda yakin ingin keluar dari aplikasi?",
+                    style: TextStyle(
+                      color: AppColors.text,
+                      fontSize: 14,
+                    ),
+                  ),
+                  actions: [
+                    SizedBox(
+                      width: double.infinity,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              height: 40,
+                              child: TextButton(
+                                style: TextButton.styleFrom(
+                                  surfaceTintColor: AppColors.white,
+                                  overlayColor:
+                                      AppColors.primary.withOpacity(0.1),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  backgroundColor:
+                                      AppColors.textLight.withOpacity(0.1),
+                                ),
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                child: const Text(
+                                  "Cancel",
+                                  style: TextStyle(
+                                    color: AppColors.primary,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: SizedBox(
+                              height: 40,
+                              child: TextButton(
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  backgroundColor: AppColors.primary,
+                                  foregroundColor: Colors.white, // Warna teks
+                                ),
+                                onPressed: () {
+                                  ProfileController().logout();
+                                },
+                                child: const Text("Logout"),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
                 );
               },
               child: Text(
-                "Logout",
+                "Keluar",
                 style: AppTextStyles.body.copyWith(
                   fontSize: 14,
                   color: AppColors.white,

@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:school_management_system/routes/routes.dart';
@@ -23,7 +22,6 @@ class AuthController extends GetxController {
   }
 
   Future<void> login(String email, String password) async {
-    log("Login $email $password");
     try {
       final response = await supabase.auth
           .signInWithPassword(email: email, password: password);
@@ -55,7 +53,8 @@ class AuthController extends GetxController {
                 fontWeight: FontWeight.w500,
                 fontSize: 14,
               ),
-            ));
+          ),
+        );
       }
     
       if (e.code == "invalid_credentials") {
@@ -69,10 +68,24 @@ class AuthController extends GetxController {
                 fontWeight: FontWeight.w500,
                 fontSize: 14,
               ),
-            ));
+          ),
+        );
       }
     } catch (e) {
-      Get.snackbar("Login Gagal", "Terjadi kesalahan!");
+      Get.snackbar(
+        "Login Gagal",
+        "Terjadi kesalahan! : $e",
+        colorText: AppColors.red,
+        barBlur: 20,
+        titleText: const Text(
+          "Login Gagal",
+          style: TextStyle(
+            color: Colors.red,
+            fontWeight: FontWeight.w500,
+            fontSize: 14,
+          ),
+        ),
+      );
     }
   }
 
