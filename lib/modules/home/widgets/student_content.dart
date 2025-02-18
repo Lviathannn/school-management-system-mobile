@@ -1,137 +1,200 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:school_management_system/modules/home/controllers/student_controller.dart';
+import 'package:school_management_system/modules/home/models/student_model.dart';
 import 'package:school_management_system/shared/themes/app_colors.dart';
+import 'package:school_management_system/shared/themes/app_images.dart';
 import 'package:school_management_system/shared/themes/app_sizes.dart';
 import 'package:school_management_system/shared/themes/app_texts.dart';
+import 'package:school_management_system/shared/widgets/app_badge.dart';
+import 'package:school_management_system/shared/widgets/empty_data.dart';
 import 'package:school_management_system/shared/widgets/information.dart';
+import 'package:shimmer/shimmer.dart';
 
 class StudentContent extends StatelessWidget {
   const StudentContent({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final StudentController studentController = Get.put(StudentController());
+
     return CustomScrollView(
       slivers: [
-        SliverPadding(
-          padding:
-              const EdgeInsets.symmetric(
-              horizontal: AppSizes.paddingMedium,
-              vertical: AppSizes.paddingMedium),
-          sliver:
-              SliverList(delegate: SliverChildBuilderDelegate((context, index) {
-            return Container(
-              margin: const EdgeInsets.only(bottom: AppSizes.paddingMedium),
-              padding: const EdgeInsets.all(AppSizes.paddingMedium),
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(8),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.text.withOpacity(0.1),
-                    blurRadius: 10,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
+        Obx(() {
+          if (studentController.isFetching.value) {
+            return SliverPadding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSizes.paddingMedium,
+                vertical: AppSizes.paddingMedium,
               ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          const CircleAvatar(
-                            radius: 20,
-                            backgroundImage:
-                                AssetImage('assets/images/boy.png'),
-                            backgroundColor: AppColors.background,
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    return SizedBox(
+                      width: double.infinity,
+                      height: 150,
+                      child: Shimmer.fromColors(
+                        baseColor: AppColors.textLight.withOpacity(0.5),
+                        highlightColor: AppColors.background,
+                        child: Container(
+                          margin: const EdgeInsets.only(
+                            bottom: AppSizes.paddingMedium,
                           ),
-                          const SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Muhammad Asrul',
-                                style: AppTextStyles.body
-                                    .copyWith(fontWeight: FontWeight.w600),
-                              ),
-                              const SizedBox(height: 5),
-                              Text(
-                                '3207180110010001',
-                                style: AppTextStyles.caption.copyWith(
-                                  color: AppColors.textLight,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Text(
-                          'Kelas A',
-                          style: AppTextStyles.body.copyWith(
-                              color: AppColors.primary,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Information(
-                          title: "Tanggal Lahir",
-                          child: Text(
-                            '17 Agustus 2003',
-                            style: AppTextStyles.bodyBold,
-                          )),
-                      Information(
-                        title: "Orang Tua",
-                        child: Text(
-                            'Anwar Sanusi',
-                          style: AppTextStyles.bodyBold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 40,
-                    child: TextButton(
-                      onPressed: () {
-                        Get.toNamed('/student-detail/1');
-                      },
-                      style: ButtonStyle(
-                        backgroundColor:
-                            WidgetStateProperty.all(AppColors.primary),
-                        shape: WidgetStateProperty.all(
-                          RoundedRectangleBorder(
+                          decoration: BoxDecoration(
+                            color: AppColors.textLight.withOpacity(0.5),
                             borderRadius: BorderRadius.circular(8),
                           ),
+                          width: double.infinity,
+                          height: 100,
                         ),
                       ),
-                      child: Text(
-                        'Lihat Detail',
-                        style: AppTextStyles.caption
-                            .copyWith(color: AppColors.white),
-                      ),
+                    );
+                  },
+                  childCount: 5,
+                ),
+              ),
+            );
+          }
+
+          if (studentController.students.isEmpty) {
+            return const SliverToBoxAdapter(
+                child: EmptyData(
+              message: 'Tidak ada data siswa',
+            ));
+          }
+
+          return SliverPadding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSizes.paddingMedium,
+              vertical: AppSizes.paddingMedium,
+            ),
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  return StudentItem(
+                    student: studentController.students[index],
+                  );
+                },
+                childCount: studentController.students.length,
+              ),
+            ),
+          );
+        }),
+      ],
+    );
+  }
+}
+
+class StudentItem extends StatelessWidget {
+  final StudentModel student;
+  const StudentItem({super.key, required this.student});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: AppSizes.paddingMedium),
+      padding: const EdgeInsets.all(AppSizes.paddingMedium),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.text.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundImage: AssetImage(
+                      student.gender == "l" ? AppImages.boy : AppImages.girl,
                     ),
+                    backgroundColor: AppColors.background,
+                  ),
+                  const SizedBox(width: 10),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        student.name,
+                        style: AppTextStyles.body
+                            .copyWith(fontWeight: FontWeight.w600),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        student.nis,
+                        style: AppTextStyles.caption.copyWith(
+                          color: AppColors.textLight,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
                   )
                 ],
               ),
-            );
-          })),
-        ),
-      ],
+              AppBadge(
+                backgroundColor: student.student_class == "A"
+                    ? AppColors.primary.withOpacity(0.1)
+                    : AppColors.red.withOpacity(0.1),
+                text: "Kelas ${student.student_class}",
+                color: student.student_class == "A"
+                    ? AppColors.primary
+                    : AppColors.red,
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Information(
+                  title: "Tanggal Lahir",
+                  child: Text(
+                    DateFormat('dd MMMM yyyy').format(student.birth_date),
+                    style: AppTextStyles.bodyBold,
+                  )),
+              Information(
+                title: "Orang Tua",
+                child: Text(
+                  student.parent,
+                  style: AppTextStyles.bodyBold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
+            width: double.infinity,
+            height: 40,
+            child: TextButton(
+              onPressed: () {
+                Get.toNamed('/student-detail/${student.id}');
+              },
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all(AppColors.primary),
+                shape: WidgetStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+              child: Text(
+                'Lihat Detail',
+                style: AppTextStyles.caption.copyWith(color: AppColors.white),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

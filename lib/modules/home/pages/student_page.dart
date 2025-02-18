@@ -1,8 +1,6 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:school_management_system/modules/home/controllers/student_controller.dart';
 import 'package:school_management_system/modules/home/controllers/tab_controller.dart';
 import 'package:school_management_system/modules/home/widgets/point_content.dart';
 import 'package:school_management_system/modules/home/widgets/saving_content.dart';
@@ -12,10 +10,17 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:school_management_system/shared/themes/app_sizes.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
-class StudentPage extends StatelessWidget {
-  StudentPage({super.key});
+class StudentPage extends StatefulWidget {
+  const StudentPage({super.key});
 
+  @override
+  State<StudentPage> createState() => _StudentPageState();
+}
+
+class _StudentPageState extends State<StudentPage> {
   final TabViewController tabController = Get.put(TabViewController());
+
+  final StudentController studentController = Get.put(StudentController());
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +38,9 @@ class StudentPage extends StatelessWidget {
                 style:
                     const TextStyle(color: AppColors.textLight, fontSize: 14),
                 cursorColor: AppColors.primary,
+                onChanged: (value) => {
+                  studentController.searchText.value = value,
+                },
                 decoration: InputDecoration(
                   hintText: 'Cari Siswa',
                   hintStyle:
@@ -100,7 +108,7 @@ class StudentPage extends StatelessWidget {
         ),
         body: TabBarView(
           controller: tabController.tabController,
-          children: [
+          children: const [
             StudentContent(),
             SavingContent(),
             PointContent(),
@@ -112,17 +120,18 @@ class StudentPage extends StatelessWidget {
 
   Future _displayBottomSheet(BuildContext context) {
     final TabViewController tabController = Get.find<TabViewController>();
+    final StudentController studentController = Get.find<StudentController>();
 
     final classOption = [
-      "Semua Kelas",
-      "Kelas A",
-      "Kelas B",
+      "",
+      "A",
+      "B",
     ];
 
     final genderOption = [
-      "Semua Gender",
-      "Laki - Laki",
-      "Perempuan",
+      "",
+      "p",
+      "l",
     ];
 
     final studentOption = [
@@ -146,9 +155,9 @@ class StudentPage extends StatelessWidget {
             width: double.infinity,
             height: tabController.currentTabIndex.value == 0 ? 300 : 450,
             padding: const EdgeInsets.all(AppSizes.paddingLarge),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: AppColors.white,
-              borderRadius: const BorderRadius.vertical(
+              borderRadius: BorderRadius.vertical(
                 top: Radius.circular(20),
               ),
             ),
@@ -158,7 +167,7 @@ class StudentPage extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Kelas",
                       style: TextStyle(
                         color: AppColors.text,
@@ -173,13 +182,13 @@ class StudentPage extends StatelessWidget {
                         child: DropdownButton2(
                           isExpanded: true,
                           buttonStyleData: ButtonStyleData(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             decoration: BoxDecoration(
                               color: AppColors.background,
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          iconStyleData: IconStyleData(
+                          iconStyleData: const IconStyleData(
                             icon: Icon(
                               HugeIcons.strokeRoundedArrowDown01,
                               color: AppColors.textLight,
@@ -199,15 +208,18 @@ class StudentPage extends StatelessWidget {
                               ],
                             ),
                           ),
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: AppColors.textLight, fontSize: 14),
-                          value: classOption[0],
+                          value: studentController.classFilter.value,
                           items: classOption.map((String value) {
                             return DropdownMenuItem(
                               value: value,
+                              onTap: () => {
+                                studentController.classFilter.value = value,
+                              },
                               child: Text(
-                                value,
-                                style: TextStyle(
+                                value == "" ? "Semua Kelas" : "Kelas $value",
+                                style: const TextStyle(
                                   color: AppColors.text,
                                   fontSize: 14,
                                 ),
@@ -226,7 +238,7 @@ class StudentPage extends StatelessWidget {
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               "Gender",
                               style: TextStyle(
                                 color: AppColors.text,
@@ -241,13 +253,13 @@ class StudentPage extends StatelessWidget {
                                 child: DropdownButton2(
                                   isExpanded: true,
                                   buttonStyleData: ButtonStyleData(
-                                    padding: EdgeInsets.only(right: 10),
+                                    padding: const EdgeInsets.only(right: 10),
                                     decoration: BoxDecoration(
                                       color: AppColors.background,
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                   ),
-                                  iconStyleData: IconStyleData(
+                                  iconStyleData: const IconStyleData(
                                     icon: Icon(
                                       HugeIcons.strokeRoundedArrowDown01,
                                       color: AppColors.textLight,
@@ -267,15 +279,23 @@ class StudentPage extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: AppColors.textLight, fontSize: 14),
-                                  value: genderOption[0],
+                                  value: studentController.genderFilter.value,
                                   items: genderOption.map((String value) {
                                     return DropdownMenuItem(
                                       value: value,
+                                      onTap: () => {
+                                        studentController.genderFilter.value =
+                                            value,
+                                      },
                                       child: Text(
-                                        value,
-                                        style: TextStyle(
+                                        value == ""
+                                            ? "Semua Gender"
+                                            : value == "p"
+                                                ? "Perempuan"
+                                                : "Laki-laki",
+                                        style: const TextStyle(
                                           color: AppColors.text,
                                           fontSize: 14,
                                         ),
@@ -293,7 +313,7 @@ class StudentPage extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                   "Siswa",
                                   style: TextStyle(
                                     color: AppColors.text,
@@ -308,14 +328,15 @@ class StudentPage extends StatelessWidget {
                                     child: DropdownButton2(
                                       isExpanded: true,
                                       buttonStyleData: ButtonStyleData(
-                                        padding: EdgeInsets.only(right: 10),
+                                        padding:
+                                            const EdgeInsets.only(right: 10),
                                         decoration: BoxDecoration(
                                           color: AppColors.background,
                                           borderRadius:
                                               BorderRadius.circular(10),
                                         ),
                                       ),
-                                      iconStyleData: IconStyleData(
+                                      iconStyleData: const IconStyleData(
                                         icon: Icon(
                                           HugeIcons.strokeRoundedArrowDown01,
                                           color: AppColors.textLight,
@@ -337,7 +358,7 @@ class StudentPage extends StatelessWidget {
                                           ],
                                         ),
                                       ),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           color: AppColors.textLight,
                                           fontSize: 14),
                                       value: studentOption[0],
@@ -346,7 +367,7 @@ class StudentPage extends StatelessWidget {
                                           value: value,
                                           child: Text(
                                             value,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               color: AppColors.text,
                                               fontSize: 14,
                                             ),
@@ -363,7 +384,7 @@ class StudentPage extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                   "Tanggal Mulai",
                                   style: TextStyle(
                                     color: AppColors.text,
@@ -378,14 +399,15 @@ class StudentPage extends StatelessWidget {
                                     child: DropdownButton2(
                                       isExpanded: true,
                                       buttonStyleData: ButtonStyleData(
-                                        padding: EdgeInsets.only(right: 10),
+                                        padding:
+                                            const EdgeInsets.only(right: 10),
                                         decoration: BoxDecoration(
                                           color: AppColors.background,
                                           borderRadius:
                                               BorderRadius.circular(10),
                                         ),
                                       ),
-                                      iconStyleData: IconStyleData(
+                                      iconStyleData: const IconStyleData(
                                         icon: Icon(
                                           HugeIcons.strokeRoundedArrowDown01,
                                           color: AppColors.textLight,
@@ -407,7 +429,7 @@ class StudentPage extends StatelessWidget {
                                           ],
                                         ),
                                       ),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           color: AppColors.textLight,
                                           fontSize: 14),
                                       value: studentOption[0],
@@ -416,7 +438,7 @@ class StudentPage extends StatelessWidget {
                                           value: value,
                                           child: Text(
                                             value,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               color: AppColors.text,
                                               fontSize: 14,
                                             ),
@@ -433,7 +455,7 @@ class StudentPage extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                   "Tanggal Selesai",
                                   style: TextStyle(
                                     color: AppColors.text,
@@ -448,14 +470,15 @@ class StudentPage extends StatelessWidget {
                                     child: DropdownButton2(
                                       isExpanded: true,
                                       buttonStyleData: ButtonStyleData(
-                                        padding: EdgeInsets.only(right: 10),
+                                        padding:
+                                            const EdgeInsets.only(right: 10),
                                         decoration: BoxDecoration(
                                           color: AppColors.background,
                                           borderRadius:
                                               BorderRadius.circular(10),
                                         ),
                                       ),
-                                      iconStyleData: IconStyleData(
+                                      iconStyleData: const IconStyleData(
                                         icon: Icon(
                                           HugeIcons.strokeRoundedArrowDown01,
                                           color: AppColors.textLight,
@@ -477,7 +500,7 @@ class StudentPage extends StatelessWidget {
                                           ],
                                         ),
                                       ),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           color: AppColors.textLight,
                                           fontSize: 14),
                                       value: studentOption[0],
@@ -486,7 +509,7 @@ class StudentPage extends StatelessWidget {
                                           value: value,
                                           child: Text(
                                             value,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               color: AppColors.text,
                                               fontSize: 14,
                                             ),
@@ -503,22 +526,24 @@ class StudentPage extends StatelessWidget {
                         ),
                 ),
                 const SizedBox(height: 25),
-                Spacer(),
+                const Spacer(),
                 SizedBox(
                   width: double.infinity,
                   child: TextButton(
                     onPressed: () {
                       Get.back();
+                      studentController.fetchAllStudent();
                     },
                     style: TextButton.styleFrom(
                       backgroundColor: AppColors.primary,
                       padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                          const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 20),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       "Terapkan",
                       style: TextStyle(
                         color: AppColors.white,
