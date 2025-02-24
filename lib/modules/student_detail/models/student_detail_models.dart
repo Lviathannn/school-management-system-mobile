@@ -15,6 +15,7 @@ class StudentDetailModel {
   final String nis;
   final String gender;
   final ProfilePicture? profile_picture;
+  final List<Attachment> attachment;
 
   StudentDetailModel({
     required this.id,
@@ -28,6 +29,7 @@ class StudentDetailModel {
     required this.nik,
     required this.nis,
     required this.gender,
+    required this.attachment,
     this.profile_picture,
   });
 
@@ -44,9 +46,28 @@ class StudentDetailModel {
       birth_place: json['birth_place'],
       nik: json['nik'],
       nis: json['nis'],
+      attachment: List<Attachment>.from(
+          json['attachment'].map((x) => Attachment.fromJson(x))),
       profile_picture: json['profile_picture'] != null
           ? ProfilePicture.fromJson(json['profile_picture'])
           : null,
+    );
+  }
+}
+
+class Attachment {
+  final String url;
+  final String type;
+
+  Attachment({
+    required this.url,
+    required this.type,
+  });
+
+  factory Attachment.fromJson(Map<String, dynamic> json) {
+    return Attachment(
+      url: json['url'],
+      type: json['type'],
     );
   }
 }

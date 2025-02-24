@@ -8,7 +8,7 @@ class StudentDetailService {
     try {
       final response = await supabase
           .from('student')
-          .select('*, profile_picture(url)')
+          .select('*, profile_picture(url), attachment(*)')
           .eq('id', studentId)
           .single();
 

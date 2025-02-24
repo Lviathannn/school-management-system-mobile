@@ -263,28 +263,52 @@ class StudentDetail extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: const Column(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TitleBanner(text: "Lampiran Siswa"),
-                      SizedBox(height: 30),
-                      Attachment(
+                      const TitleBanner(text: "Lampiran Siswa"),
+                      const SizedBox(height: 30),
+                      Obx(
+                        () => Attachment(
                         title: "Foto Siswa",
                         icon: HugeIcons.strokeRoundedBackpack01,
                         color: AppColors.emerald,
+                          url: controller.student.value?.profile_picture?.url ??
+                              "",
+                        ),
                       ),
-                      SizedBox(height: 10),
-                      Attachment(
-                        title: "Kartu Keluarga",
-                        icon: HugeIcons.strokeRoundedIdentityCard,
-                        color: AppColors.indigo,
+                      Obx(
+                        () => Column(
+                          children: controller.student.value?.attachment
+                                  .map(
+                                    (e) => Padding(
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: Attachment(
+                                        url: e.url,
+                                        title: e.type == "kk"
+                                            ? "Kartu Keluarga"
+                                            : e.type == "ktp"
+                                                ? "KTP"
+                                                : "Ijazah",
+                                        icon: e.type == "kk"
+                                            ? HugeIcons
+                                                .strokeRoundedIdentityCard
+                                            : e.type == "ktp"
+                                                ? HugeIcons.strokeRoundedManager
+                                                : HugeIcons
+                                                    .strokeRoundedDiploma,
+                                        color: e.type == "kk"
+                                            ? AppColors.indigo
+                                            : e.type == "ktp"
+                                                ? AppColors.red
+                                                : AppColors.emerald,
+                                      ),
+                                    ),
+                                  )
+                                  .toList() ??
+                              [],
+                        ),
                       ),
-                      SizedBox(height: 10),
-                      Attachment(
-                        title: "KTP Orang Tua",
-                        icon: HugeIcons.strokeRoundedManager,
-                        color: AppColors.red,
-                      )
                     ],
                   ),
                 ),

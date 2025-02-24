@@ -185,18 +185,22 @@ class TeacherDetail extends StatelessWidget {
                       TitleBanner(text: "Lampiran Guru"),
                       SizedBox(height: 30),
                       Attachment(
+                        url: "",
                         title: "Foto Guru",
                         icon: HugeIcons.strokeRoundedBackpack01,
                         color: AppColors.emerald,
                       ),
                       SizedBox(height: 10),
                       Attachment(
+                        url: "",
+
                         title: "Kartu Keluarga",
                         icon: HugeIcons.strokeRoundedIdentityCard,
                         color: AppColors.indigo,
                       ),
                       SizedBox(height: 10),
                       Attachment(
+                        url: "",
                         title: "KTP",
                         icon: HugeIcons.strokeRoundedManager,
                         color: AppColors.red,
