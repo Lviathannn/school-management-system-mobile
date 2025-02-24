@@ -1,6 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
 
-class StudentModel {
+import 'package:school_management_system/modules/home/models/student_model.dart';
+
+class StudentDetailModel {
   final int id;
   final String name;
   final DateTime birth_date;
@@ -14,7 +16,7 @@ class StudentModel {
   final String gender;
   final ProfilePicture? profile_picture;
 
-  StudentModel({
+  StudentDetailModel({
     required this.id,
     required this.name,
     required this.birth_date,
@@ -29,8 +31,8 @@ class StudentModel {
     this.profile_picture,
   });
 
-  factory StudentModel.fromJson(Map<String, dynamic> json) {
-    return StudentModel(
+  factory StudentDetailModel.fromJson(Map<String, dynamic> json) {
+    return StudentDetailModel(
       id: json['id'],
       name: json['name'],
       gender: json['gender'],
@@ -45,18 +47,6 @@ class StudentModel {
       profile_picture: json['profile_picture'] != null
           ? ProfilePicture.fromJson(json['profile_picture'])
           : null,
-    );
-  }
-}
-
-class ProfilePicture {
-  final String url;
-
-  ProfilePicture({required this.url});
-
-  factory ProfilePicture.fromJson(Map<String, dynamic> json) {
-    return ProfilePicture(
-      url: json['url'],
     );
   }
 }

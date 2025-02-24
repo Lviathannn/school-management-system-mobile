@@ -10,7 +10,7 @@ class StudentService {
   }) async {
     try {
       final supabase = Supabase.instance.client;
-      var query = supabase.from('student').select();
+      var query = supabase.from('student').select('*, profile_picture(url)');
 
       if (searchText.isNotEmpty) {
         query = query.ilike('name', '%$searchText%');

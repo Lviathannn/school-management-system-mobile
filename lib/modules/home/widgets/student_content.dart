@@ -115,9 +115,14 @@ class StudentItem extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 20,
-                    backgroundImage: AssetImage(
-                      student.gender == "l" ? AppImages.boy : AppImages.girl,
-                    ),
+                    backgroundImage: student.profile_picture == null
+                        ? AssetImage(
+                            student.gender == "l"
+                                ? AppImages.boy
+                                : AppImages.girl,
+                          )
+                        : NetworkImage(student.profile_picture?.url ?? "")
+                            as ImageProvider,
                     backgroundColor: AppColors.background,
                   ),
                   const SizedBox(width: 10),

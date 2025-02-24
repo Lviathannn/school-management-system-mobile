@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:intl/intl.dart';
+import 'package:school_management_system/modules/student_detail/controllers/student_detail_controller.dart';
 import 'package:school_management_system/shared/themes/app_colors.dart';
 import 'package:school_management_system/shared/themes/app_images.dart';
 import 'package:school_management_system/shared/themes/app_sizes.dart';
@@ -16,6 +18,10 @@ class StudentDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final StudentDetailController controller = Get.put(
+      StudentDetailController(),
+    );
+
     return Scaffold(
         backgroundColor: AppColors.background,
         appBar: AppBar(
@@ -25,27 +31,35 @@ class StudentDetail extends StatelessWidget {
           surfaceTintColor: AppColors.white,
           automaticallyImplyLeading: false,
           title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                onPressed: () {
-                  Get.back();
-                },
-                icon: const HugeIcon(
+              SizedBox(
+                width: 40,
+                height: 40,
+                child: IconButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  icon: const HugeIcon(
                     icon: HugeIcons.strokeRoundedArrowLeft01,
-                    color: AppColors.text),
-              ),
-              Text(
-                "Detail Siswa",
-                style: AppTextStyles.body.copyWith(
-                  color: AppColors.text,
-                  fontWeight: FontWeight.w500,
+                    color: AppColors.text,
+                  ),
                 ),
               ),
-              const SizedBox()
+              Expanded(
+                child: Text(
+                  "Detail Siswa",
+                  textAlign: TextAlign.center,
+                  style: AppTextStyles.body.copyWith(
+                    color: AppColors.text,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 40), 
             ],
           ),
         ),
+
         body: CustomScrollView(
           slivers: [
             const SliverToBoxAdapter(
@@ -75,81 +89,121 @@ class StudentDetail extends StatelessWidget {
                     children: [
                       const TitleBanner(text: "Informasi Siswa"),
                       const SizedBox(height: 30),
-                      Row(
-                        children: [
-                          const SizedBox(
-                            width: 65,
-                            height: 65,
-                            child: CircleAvatar(
-                              radius: 30,
-                              backgroundImage: AssetImage(AppImages.boy),
-                            ),
-                          ),
-                          const SizedBox(width: 30),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'John Doe',
-                                style: AppTextStyles.subtitle.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                ),
+                      Obx(
+                        () => Row(
+                          children: [
+                            SizedBox(
+                              width: 65,
+                              height: 65,
+                              child: CircleAvatar(
+                                radius: 20,
+                                backgroundImage: controller.student.value
+                                            ?.profile_picture?.url ==
+                                        null
+                                    ? AssetImage(
+                                        controller.student.value?.gender == "l"
+                                            ? AppImages.boy
+                                            : AppImages.girl,
+                                      )
+                                    : NetworkImage(
+                                        controller.student.value
+                                                ?.profile_picture?.url ??
+                                            "",
+                                      ) as ImageProvider,
+                                backgroundColor: AppColors.background,
                               ),
-                              AppBadge(
-                                  text: "Kelas A",
-                                  color: AppColors.primary,
+                            ),
+                            const SizedBox(width: 30),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  controller.student.value?.name ?? "",
+                                  style: AppTextStyles.subtitle.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                AppBadge(
                                   backgroundColor:
-                                      AppColors.primary.withOpacity(0.1))
-                            ],
-                          )
-                        ],
+                                      controller.student.value?.student_class ==
+                                              "A"
+                                          ? AppColors.primary.withOpacity(0.1)
+                                          : AppColors.red.withOpacity(0.1),
+                                  text:
+                                      "Kelas ${controller.student.value?.student_class}",
+                                  color:
+                                      controller.student.value?.student_class ==
+                                              "A"
+                                          ? AppColors.primary
+                                          : AppColors.red,
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                       const SizedBox(height: 30),
-                      const Information(
+                      Obx(
+                        () => Information(
                         title: "Nomor Induk Siswa",
                         child: Text(
-                          "1234567890",
+                            controller.student.value?.nis ?? "",
                           style: AppTextStyles.bodyBold,
+                        ),
                         ),
                       ),
                       const SizedBox(height: 20),
-                      const Information(
-                        title: "NIK",
-                        child: Text(
-                          "1234567890",
-                          style: AppTextStyles.bodyBold,
+                      Obx(
+                        () => Information(
+                          title: "NIK",
+                          child: Text(
+                            controller.student.value?.nik ?? "",
+                            style: AppTextStyles.bodyBold,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 20),
-                      const Information(
-                        title: "Tempat, Tanggal Lahir",
-                        child: Text(
-                          "Jakarta, 01 Januari 2000",
-                          style: AppTextStyles.bodyBold,
+                      Obx(
+                        () => Information(
+                          title: "Tanggal Lahir",
+                          child: Text(
+                            "${controller.student.value?.birth_place}, ${DateFormat('dd MMMM yyyy').format(
+                              controller.student.value?.birth_date ??
+                                  DateTime.now(),
+                            )}",
+                            style: AppTextStyles.bodyBold,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 20),
-                      const Information(
-                        title: "Orang Tua",
-                        child: Text(
-                          "Anwar Sanusi",
-                          style: AppTextStyles.bodyBold,
+                      Obx(
+                        () => Information(
+                          title: "Orang Tua",
+                          child: Text(
+                            controller.student.value?.parent ?? "",
+                            style: AppTextStyles.bodyBold,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 20),
-                      const Information(
-                        title: "Alamat",
-                        child: Text(
-                          "Jl. Kebon Jeruk No. 1, Jakarta Barat",
-                          style: AppTextStyles.bodyBold,
+                      Obx(
+                        () => Information(
+                          title: "Alamat",
+                          child: Text(
+                            controller.student.value?.address ?? "",
+                            style: AppTextStyles.bodyBold,
+                          ),
                         ),
                       ),
+                     
                       const SizedBox(height: 20),
-                      const Information(
-                        title: "Kontak Orang Tua",
-                        child: Text(
-                          "081234567890",
-                          style: AppTextStyles.bodyBold,
+                      Obx(
+                        () => Information(
+                          title: "Kontak Orang Tua",
+                          child: Text(
+                            controller.student.value?.contact ?? "",
+                            style: AppTextStyles.bodyBold,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 20),

@@ -33,7 +33,7 @@ class AuthController extends GetxController {
             barBlur: 20,
             titleText: const Text(
               "Login Berhasil",
-              style: TextStyle(
+              style: TextStyle( 
                 color: AppColors.primary,
                 fontWeight: FontWeight.w500,
                 fontSize: 14,
