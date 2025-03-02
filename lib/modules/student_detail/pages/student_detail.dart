@@ -12,6 +12,7 @@ import 'package:school_management_system/shared/widgets/attachment.dart';
 import 'package:school_management_system/shared/widgets/information.dart';
 import 'package:school_management_system/shared/widgets/information_icon.dart';
 import 'package:school_management_system/shared/widgets/title_banner.dart';
+import 'package:shimmer/shimmer.dart';
 
 class StudentDetail extends StatelessWidget {
   const StudentDetail({super.key});
@@ -67,6 +68,32 @@ class StudentDetail extends StatelessWidget {
                 height: 20,
               ),
             ),
+            Obx(
+              () => controller.isFetching.value
+                  ? SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 800,
+                          child: Shimmer.fromColors(
+                            baseColor: AppColors.textLight.withOpacity(0.1),
+                            highlightColor:
+                                AppColors.textLight.withOpacity(0.25),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: AppColors.background,
+                                borderRadius: BorderRadius.circular(
+                                    AppSizes.borderRadius),
+                              ),
+                              width: double.infinity,
+                              height: 300,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  : 
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -89,8 +116,7 @@ class StudentDetail extends StatelessWidget {
                     children: [
                       const TitleBanner(text: "Informasi Siswa"),
                       const SizedBox(height: 30),
-                      Obx(
-                        () => Row(
+                              Row(
                           children: [
                             SizedBox(
                               width: 65,
@@ -139,32 +165,26 @@ class StudentDetail extends StatelessWidget {
                                 ),
                               ],
                             )
-                          ],
-                        ),
-                      ),
+                                ],
+                              ),
                       const SizedBox(height: 30),
-                      Obx(
-                        () => Information(
+                              Information(
                         title: "Nomor Induk Siswa",
                         child: Text(
                             controller.student.value?.nis ?? "",
                           style: AppTextStyles.bodyBold,
                         ),
-                        ),
-                      ),
+                              ),
                       const SizedBox(height: 20),
-                      Obx(
-                        () => Information(
+                              Information(
                           title: "NIK",
                           child: Text(
                             controller.student.value?.nik ?? "",
                             style: AppTextStyles.bodyBold,
                           ),
-                        ),
-                      ),
+                              ),
                       const SizedBox(height: 20),
-                      Obx(
-                        () => Information(
+                              Information(
                           title: "Tanggal Lahir",
                           child: Text(
                             "${controller.student.value?.birth_place}, ${DateFormat('dd MMMM yyyy').format(
@@ -173,38 +193,31 @@ class StudentDetail extends StatelessWidget {
                             )}",
                             style: AppTextStyles.bodyBold,
                           ),
-                        ),
-                      ),
+                              ),
                       const SizedBox(height: 20),
-                      Obx(
-                        () => Information(
+                              Information(
                           title: "Orang Tua",
                           child: Text(
                             controller.student.value?.parent ?? "",
                             style: AppTextStyles.bodyBold,
                           ),
-                        ),
-                      ),
+                              ),
                       const SizedBox(height: 20),
-                      Obx(
-                        () => Information(
+Information(
                           title: "Alamat",
                           child: Text(
                             controller.student.value?.address ?? "",
                             style: AppTextStyles.bodyBold,
-                          ),
-                        ),
-                      ),
+                                ),
+                              ),
                      
                       const SizedBox(height: 20),
-                      Obx(
-                        () => Information(
+                              Information(
                           title: "Kontak Orang Tua",
                           child: Text(
                             controller.student.value?.contact ?? "",
                             style: AppTextStyles.bodyBold,
-                          ),
-                        ),
+                                ),
                       ),
                       const SizedBox(height: 20),
                       Container(
@@ -241,12 +254,40 @@ class StudentDetail extends StatelessWidget {
                 ),
               ),
             ),
+            ),
+            
             const SliverToBoxAdapter(
               child: SizedBox(
                 height: 25,
               ),
             ),
-            SliverToBoxAdapter(
+
+            Obx(
+              () => controller.isFetching.value
+                  ? SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 300,
+                          child: Shimmer.fromColors(
+                            baseColor: AppColors.textLight.withOpacity(0.1),
+                            highlightColor:
+                                AppColors.textLight.withOpacity(0.25),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: AppColors.background,
+                                borderRadius: BorderRadius.circular(
+                                    AppSizes.borderRadius),
+                              ),
+                              width: double.infinity,
+                              height: 300,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  : SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Container(
@@ -313,6 +354,7 @@ class StudentDetail extends StatelessWidget {
                   ),
                 ),
               ),
+            ),
             ),
             const SliverToBoxAdapter(
               child: SizedBox(

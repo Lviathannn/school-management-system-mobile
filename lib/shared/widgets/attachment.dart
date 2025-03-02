@@ -101,60 +101,62 @@ class Attachment extends StatelessWidget {
                   ),
                   icon: const Icon(HugeIcons.strokeRoundedFile02),
                   onPressed: () async {
-                    Get.dialog(
-                      Dialog(
-                        backgroundColor: AppColors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(AppSizes.borderRadius),
-                        ),
-                        child: Container(
-                          constraints: const BoxConstraints(
-                            minHeight: 300,
-                          ),
-                          padding: const EdgeInsets.all(AppSizes.paddingSmall),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const SizedBox(
-                                    width: 40,
-                                  ),
-                                  const Text(
-                                    "Preview File",
-                                    style: AppTextStyles.heading,
-                                  ),
-                                  SizedBox(
-                                    width: 40,
-                                    child: IconButton(
-                                      style: ButtonStyle(
-                                        shape: MaterialStateProperty.all(
-                                          RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
+                   
+
+                    isPdf
+                        ? openDownloadedPDF(url)
+                        : Get.dialog(
+                            Dialog(
+                              backgroundColor: AppColors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    AppSizes.borderRadius),
+                              ),
+                              child: Container(
+                                constraints: const BoxConstraints(
+                                  minHeight: 300,
+                                ),
+                                padding:
+                                    const EdgeInsets.all(AppSizes.paddingSmall),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const SizedBox(
+                                          width: 40,
+                                        ),
+                                        const Text(
+                                          "Preview File",
+                                          style: AppTextStyles.heading,
+                                        ),
+                                        SizedBox(
+                                          width: 40,
+                                          child: IconButton(
+                                            style: ButtonStyle(
+                                              shape: MaterialStateProperty.all(
+                                                RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                              ),
+                                            ),
+                                            icon: const Icon(
+                                              HugeIcons.strokeRoundedCancel01,
+                                            ),
+                                            onPressed: () {
+                                              Get.back();
+                                            },
                                           ),
                                         ),
-                                      ),
-                                      icon: const Icon(
-                                        HugeIcons.strokeRoundedCancel01,
-                                      ),
-                                      onPressed: () {
-                                        Get.back();
-                                      },
+                                      ],
                                     ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              isPdf
-                                  ? const Center(
-                                      child: Text("PDF Viewer"),
-                                    )
-                                  : Image.network(
+                                    const SizedBox(height: 10),
+                                    Image.network(
                                       url,
                                       fit: BoxFit.contain,
                                       loadingBuilder: (context, child,
@@ -172,12 +174,14 @@ class Attachment extends StatelessWidget {
                                                   ),
                                                 ),
                                     ),
-                              const SizedBox(height: 10),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
+                                    const SizedBox(height: 10),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                 
+                 
                   },
                 ),
               ],

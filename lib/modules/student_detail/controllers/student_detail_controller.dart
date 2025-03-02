@@ -9,6 +9,7 @@ class StudentDetailController extends GetxController {
   final student = Rxn<StudentDetailModel?>();
   final studentId = Get.parameters['id'];
   final StudentDetailService _studentDetailService = StudentDetailService();
+  final isFetching = false.obs;
 
   @override
   void onInit() {
@@ -29,6 +30,7 @@ class StudentDetailController extends GetxController {
   }
 
   Future<StudentDetailModel?> fetchData() async {
+    isFetching.value = true;
     try {
       final response = await _studentDetailService.getStudentDetail(studentId!);
       student.value = response;
@@ -37,6 +39,8 @@ class StudentDetailController extends GetxController {
     } catch (e) {
       Get.snackbar("Error", "$e");
       return null;
+    } finally {
+      isFetching.value = false;
     }
   }
 }
