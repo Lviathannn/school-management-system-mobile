@@ -9,13 +9,12 @@ import 'package:school_management_system/shared/themes/app_colors.dart';
 
 String formatRupiah(int number, {bool withSymbol = true}) {
   final formatter = NumberFormat.currency(
-    locale: 'id', 
-    symbol: withSymbol ? 'Rp ' : '', 
-    decimalDigits: 0, 
+    locale: 'id',
+    symbol: withSymbol ? 'Rp ' : '',
+    decimalDigits: 0,
   );
   return formatter.format(number);
 }
-
 
 Future<void> downloadFile(String url, String fileName) async {
   try {
@@ -27,14 +26,48 @@ Future<void> downloadFile(String url, String fileName) async {
             ? '.png'
             : '.jpg';
 
-    String savePath = "${dir?.path}/$fileName$fileExtention";
+    String savePath =
+        "${dir?.path}/${fileName.replaceAll(" ", "-")}$fileExtention";
 
     await dio.download(url, savePath, onReceiveProgress: (count, total) {
       double progress = (count / total * 100);
-      Get.snackbar(
-        "Downloading...",
-        "Progress: ${progress.toStringAsFixed(0)}%",
-        duration: const Duration(seconds: 1),
+      Get.generalDialog(
+        pageBuilder: (_, __, ___) {
+          return Center(
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: AppColors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    "Downloading...",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  LinearProgressIndicator(
+                    value: progress / 100,
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    "${progress.toStringAsFixed(2)}%",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+        barrierDismissible: false,
       );
     });
 
