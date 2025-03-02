@@ -21,7 +21,13 @@ Future<void> downloadFile(String url, String fileName) async {
   try {
     Dio dio = Dio();
     Directory? dir = await getExternalStorageDirectory();
-    String savePath = "${dir?.path}/$fileName";
+    String fileExtention = url.contains('.pdf')
+        ? '.pdf'
+        : url.contains('.png')
+            ? '.png'
+            : '.jpg';
+
+    String savePath = "${dir?.path}/$fileName$fileExtention";
 
     await dio.download(url, savePath, onReceiveProgress: (count, total) {
       double progress = (count / total * 100);
