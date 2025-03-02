@@ -5,7 +5,6 @@ import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
 import 'package:get/get.dart';
-import 'package:school_management_system/modules/pdf_preview/view/pdf_preview_view.dart';
 import 'package:school_management_system/shared/themes/app_colors.dart';
 
 String formatRupiah(int number, {bool withSymbol = true}) {
@@ -17,9 +16,6 @@ String formatRupiah(int number, {bool withSymbol = true}) {
   return formatter.format(number);
 }
 
-void openDownloadedPDF(String filePath) {
-  Get.to(() => PdfPreviewView(filePath: filePath));
-}
 
 
 Future<void> downloadFile(String url, String fileName) async {

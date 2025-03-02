@@ -104,7 +104,7 @@ class Attachment extends StatelessWidget {
                    
 
                     isPdf
-                        ? openDownloadedPDF(url)
+                        ? downloadFile(url, title)
                         : Get.dialog(
                             Dialog(
                               backgroundColor: AppColors.white,
