@@ -4,7 +4,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:school_management_system/shared/themes/app_colors.dart';
 import 'package:school_management_system/shared/themes/app_sizes.dart';
 import 'package:school_management_system/shared/themes/app_texts.dart';
-import 'package:flutter_file_downloader/flutter_file_downloader.dart';
+import 'package:school_management_system/shared/utils/utils.dart';
 
 class Attachment extends StatelessWidget {
   final String title;
@@ -84,39 +84,7 @@ class Attachment extends StatelessWidget {
                   ),
                   icon: const Icon(HugeIcons.strokeRoundedDownload04),
                   onPressed: () async {
-                    try {
-                      await FileDownloader.downloadFile(
-                        url: url,
-                      );
-
-                      Get.snackbar(
-                          "Download Berhasil", "File telah berhasil disimpan!",
-                          colorText: AppColors.primary,
-                          barBlur: 20,
-                          titleText: const Text(
-                            "Download Berhasil",
-                            style: TextStyle(
-                              color: AppColors.primary,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14,
-                            ),
-                          ));
-                    } catch (e) {
-                      Get.snackbar(
-                        "Download Gagal!",
-                        "Terjadi kesalahan saat mengunduh file $e",
-                        colorText: AppColors.red,
-                        barBlur: 20,
-                        titleText: const Text(
-                          "Download Gagal!",
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                          ),
-                        ),
-                      );
-                    }
+                    downloadFile(url, title);
                   },
                 ),
                 const SizedBox(width: 5),

@@ -17,7 +17,10 @@ dependencies:
   dropdown_button2: ^2.3.9
   supabase_flutter: ^2.0.0
   shimmer: ^3.0.0
-  flutter_file_downloader: ^2.0.0
+  dio: ^5.4.0
+  path_provider: ^2.1.2
+  open_file: ^3.3.2
+  universal_html: ^2.2.4
 
 dev_dependencies:
   flutter_test:
