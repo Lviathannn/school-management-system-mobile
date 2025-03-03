@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
 import 'package:get/get.dart';
 import 'package:school_management_system/shared/themes/app_colors.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 String formatRupiah(int number, {bool withSymbol = true}) {
   final formatter = NumberFormat.currency(
@@ -21,7 +22,24 @@ String formatRupiah(int number, {bool withSymbol = true}) {
 Future<void> downloadFile(String url, String fileName) async {
   try {
     Dio dio = Dio();
-    Directory? dir = await getExternalStorageDirectory();
+
+    if (Platform.isAndroid) {
+      var status = await Permission.storage.request();
+      if (!status.isGranted) {
+        Get.snackbar(
+          "Izin Ditolak",
+          "Izin penyimpanan diperlukan untuk mengunduh file.",
+          colorText: Colors.red,
+        );
+        return;
+      }
+    }
+    Directory? downloadsDir = await getExternalStorageDirectory();
+    String downloadPath = "/storage/emulated/0/Download";
+    if (downloadsDir != null) {
+      downloadPath = downloadsDir.path;
+    }
+
     String fileExtention = url.contains('.pdf')
         ? '.pdf'
         : url.contains('.png')
@@ -29,7 +47,7 @@ Future<void> downloadFile(String url, String fileName) async {
             : '.jpg';
 
     String savePath =
-        "${dir?.path}/${fileName.replaceAll(" ", "-")}$fileExtention";
+        "$downloadPath/${fileName.replaceAll(" ", "-")}$fileExtention";
 
     Get.snackbar("Sedang Mendownload File!", "File Sedang di download...");
 

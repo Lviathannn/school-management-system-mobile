@@ -31,6 +31,13 @@ class StudentController extends GetxController {
     );
   }
 
+void resetFilter() {
+    searchText.value = '';
+    genderFilter.value = '';
+    classFilter.value = '';
+    fetchAllStudent();
+  }
+
   Future<void> fetchAllStudent() async {
     // Fetch all student data
     try {

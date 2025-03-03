@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:school_management_system/modules/home/models/student_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -23,6 +25,7 @@ class StudentService {
       }
 
       final response = await query;
+      log(response.toString());
       final data = response.map((e) => StudentModel.fromJson(e)).toList();
       return data;
     } catch (e) {

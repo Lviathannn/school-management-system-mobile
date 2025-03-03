@@ -143,11 +143,19 @@ class StudentDetail extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.5,
+                                        child: Text(
                                   controller.student.value?.name ?? "",
                                   style: AppTextStyles.subtitle.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                          softWrap: true,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                 ),
                                 AppBadge(
                                   backgroundColor:
