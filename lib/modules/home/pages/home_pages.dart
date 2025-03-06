@@ -221,7 +221,7 @@ class HomePages extends StatelessWidget {
                       title: 'Tabungan',
                       icon: HugeIcons.strokeRoundedTradeUp,
                       color: AppColors.sky,
-                      subtitle: 'Dalam 1 Semester',
+                      subtitle: 'Dalam 1 Tahun',
                     ),
                     SizedBox(height: AppSizes.paddingLarge),
                     SizedBox(height: 150, child: SavingChart()),

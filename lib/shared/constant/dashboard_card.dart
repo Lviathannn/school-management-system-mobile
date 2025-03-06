@@ -5,7 +5,7 @@ import 'package:school_management_system/shared/themes/app_colors.dart';
 final List<DashboardCardModel> dashboardCards = [
   DashboardCardModel(
     title: 'Siswa',
-    subtitle: 'Dalam 1 Semester',
+    subtitle: 'Saat Ini',
     description: 'Total Siswa',
     value: '100',
     color: AppColors.indigo,
@@ -13,7 +13,7 @@ final List<DashboardCardModel> dashboardCards = [
   ),
   DashboardCardModel(
     title: 'Guru',
-    subtitle: 'Dalam 1 Semester',
+    subtitle: 'Saat Ini',
     description: 'Total Guru',
     value: '10',
     color: AppColors.primary,
@@ -21,7 +21,7 @@ final List<DashboardCardModel> dashboardCards = [
   ),
   DashboardCardModel(
     title: 'Tabungan',
-    subtitle: 'Dalam 1 Semester',
+    subtitle: 'Saat Ini',
     description: 'Total Tabungan',
     value: 'Rp 100.000.000',
     color: AppColors.pink,
