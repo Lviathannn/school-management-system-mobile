@@ -20,7 +20,7 @@ class TeacherService {
         query = query.eq("gender", genderFilter);
       }
       if (roleFilter != null && roleFilter.isNotEmpty) {
-        query = query.eq("student_class", roleFilter);
+        query = query.eq("role", roleFilter);
       }
       if (degreeFilter != null && degreeFilter.isNotEmpty) {
         query = query.eq("degree", degreeFilter);

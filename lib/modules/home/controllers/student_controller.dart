@@ -9,6 +9,8 @@ class StudentController extends GetxController {
   final searchText = ''.obs;
   final genderFilter = ''.obs;
   final classFilter = ''.obs;
+  final temporaryGenderFilter = ''.obs;
+  final temporaryClassFilter = ''.obs;
 
   final StudentService _studentService = StudentService();
 
@@ -35,6 +37,9 @@ void resetFilter() {
     searchText.value = '';
     genderFilter.value = '';
     classFilter.value = '';
+    temporaryGenderFilter.value = '';
+    temporaryClassFilter.value = '';
+
     fetchAllStudent();
   }
 

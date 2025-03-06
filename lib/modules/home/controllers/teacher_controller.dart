@@ -9,6 +9,9 @@ class TeacherController extends GetxController {
   final genderFilter = ''.obs;
   final roleFilter = ''.obs;
   final degreeFilter = ''.obs;
+  final temporaryGenderFilter = ''.obs;
+  final temporaryRoleFilter = ''.obs;
+  final temporaryDegreeFilter = ''.obs;
 
   final TeacherService _teacherService = TeacherService();
 
@@ -31,6 +34,10 @@ class TeacherController extends GetxController {
     genderFilter.value = '';
     roleFilter.value = '';
     degreeFilter.value = '';
+    temporaryGenderFilter.value = '';
+    temporaryRoleFilter.value = '';
+    temporaryDegreeFilter.value = '';
+    
     fetchAllTeacher();
   }
 

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
 import 'package:school_management_system/modules/home/controllers/teacher_controller.dart';
+import 'package:school_management_system/modules/home/models/dropdown_option.dart';
 import 'package:school_management_system/modules/home/models/teacher_model.dart';
 import 'package:school_management_system/shared/themes/app_colors.dart';
 import 'package:school_management_system/shared/themes/app_images.dart';
@@ -153,27 +154,30 @@ class TeacherPage extends StatelessWidget {
   }
 
   Future _displayBottomSheet(BuildContext context) {
-    final classOption = [
-      "Semua Kelas",
-      "Kelas A",
-      "Kelas B",
+    TeacherController controller = Get.find<TeacherController>();
+
+    final roleOption = [
+      DropdownOption(label: "Semua Jabatan", value: ""),
+      DropdownOption(label: "Kepala Sekolah", value: "Kepala"),
+      DropdownOption(label: "Tata Usaha", value: "TU"),
+      DropdownOption(label: "Guru Kelas A", value: "A"),
+      DropdownOption(label: "Guru Kelas B", value: "B"),
     ];
 
     final genderOption = [
-      "Semua Gender",
-      "Laki - Laki",
-      "Perempuan",
+      DropdownOption(value: "", label: "Semua Gender"),
+      DropdownOption(value: "p", label: "Perempuan"),
+      DropdownOption(value: "l", label: "Laki laki"),
     ];
 
     final degreeOption = [
-      "Semua Pendidikan",
-      "Strata 3",
-      "Strata 2",
-      "Strata 1",
-      "Diploma 3",
-      "SMA",
-      "SMP",
-      "SD",
+      DropdownOption(value: "", label: "Semua Pendidikan"),
+      DropdownOption(value: "Strata 3", label: "Strata 3"),
+      DropdownOption(value: "Strata 2", label: "Strata 2"),
+      DropdownOption(value: "Strata 1", label: "Strata 1"),
+      DropdownOption(value: "SMA", label: "SMA"),
+      DropdownOption(value: "SMP", label: "SMP"),
+      DropdownOption(value: "SD", label: "SD"),
     ];
 
     return showModalBottomSheet(
@@ -184,9 +188,9 @@ class TeacherPage extends StatelessWidget {
       isScrollControlled: true,
       barrierColor: Colors.black.withOpacity(0.5),
       builder: (BuildContext context) {
-        return Container(
+        return Obx(() => Container(
           width: double.infinity,
-          height: 360,
+              height: 420,
           padding: const EdgeInsets.all(AppSizes.paddingLarge),
           decoration: const BoxDecoration(
             color: AppColors.white,
@@ -200,6 +204,41 @@ class TeacherPage extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                      Row(
+                        children: [
+                          const Text("Filter",
+                              style: TextStyle(
+                                color: AppColors.text,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              )),
+                          const Spacer(),
+                          TextButton(
+                            onPressed: () {
+                              controller.resetFilter();
+                              Get.back();
+                            },
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 5,
+                              ),
+                              foregroundColor: AppColors.primary,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            child: const Text(
+                              "Reset",
+                              style: TextStyle(
+                                color: AppColors.primary,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
                   const Text(
                     "Kelas",
                     style: TextStyle(
@@ -243,12 +282,12 @@ class TeacherPage extends StatelessWidget {
                         ),
                         style: const TextStyle(
                             color: AppColors.textLight, fontSize: 14),
-                        value: classOption[0],
-                        items: classOption.map((String value) {
+                            value: controller.temporaryRoleFilter.value,
+                            items: roleOption.map((value) {
                           return DropdownMenuItem(
-                            value: value,
+                                value: value.value,
                             child: Text(
-                              value,
+                                  value.label,
                               style: const TextStyle(
                                 color: AppColors.text,
                                 fontSize: 14,
@@ -256,7 +295,10 @@ class TeacherPage extends StatelessWidget {
                             ),
                           );
                         }).toList(),
-                        onChanged: (value) {},
+                            onChanged: (value) {
+                              controller.temporaryRoleFilter.value =
+                                  value.toString();
+                            },
                       ),
                     ),
                   ),
@@ -309,12 +351,12 @@ class TeacherPage extends StatelessWidget {
                         ),
                         style: const TextStyle(
                             color: AppColors.textLight, fontSize: 14),
-                        value: genderOption[0],
-                        items: genderOption.map((String value) {
+                            value: controller.temporaryGenderFilter.value,
+                            items: genderOption.map((value) {
                           return DropdownMenuItem(
-                            value: value,
+                                value: value.value,
                             child: Text(
-                              value,
+                                  value.label,
                               style: const TextStyle(
                                 color: AppColors.text,
                                 fontSize: 14,
@@ -322,7 +364,10 @@ class TeacherPage extends StatelessWidget {
                             ),
                           );
                         }).toList(),
-                        onChanged: (value) {},
+                            onChanged: (value) {
+                              controller.temporaryGenderFilter.value =
+                                  value.toString();
+                            },
                       ),
                     ),
                   ),
@@ -375,12 +420,12 @@ class TeacherPage extends StatelessWidget {
                         ),
                         style: const TextStyle(
                             color: AppColors.textLight, fontSize: 14),
-                        value: degreeOption[0],
-                        items: degreeOption.map((String value) {
+                            value: controller.temporaryDegreeFilter.value,
+                            items: degreeOption.map((value) {
                           return DropdownMenuItem(
-                            value: value,
+                                value: value.value,
                             child: Text(
-                              value,
+                                  value.label,
                               style: const TextStyle(
                                 color: AppColors.text,
                                 fontSize: 14,
@@ -388,7 +433,10 @@ class TeacherPage extends StatelessWidget {
                             ),
                           );
                         }).toList(),
-                        onChanged: (value) {},
+                            onChanged: (value) {
+                              controller.temporaryDegreeFilter.value =
+                                  value.toString();
+                            },
                       ),
                     ),
                   ),
@@ -399,6 +447,13 @@ class TeacherPage extends StatelessWidget {
                 width: double.infinity,
                 child: TextButton(
                   onPressed: () {
+                        controller.genderFilter.value =
+                            controller.temporaryGenderFilter.value;
+                        controller.roleFilter.value =
+                            controller.temporaryRoleFilter.value;
+                        controller.degreeFilter.value =
+                            controller.temporaryDegreeFilter.value;
+                        controller.fetchAllTeacher();
                     Get.back();
                   },
                   style: TextButton.styleFrom(
@@ -420,11 +475,11 @@ class TeacherPage extends StatelessWidget {
               ),
             ],
           ),
-        );
+            )
+      );
       },
     );
   }
-
 }
 
 // ignore: must_be_immutable

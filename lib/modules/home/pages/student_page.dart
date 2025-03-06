@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:school_management_system/modules/home/controllers/student_controller.dart';
 import 'package:school_management_system/modules/home/controllers/tab_controller.dart';
+import 'package:school_management_system/modules/home/models/dropdown_option.dart';
 import 'package:school_management_system/modules/home/widgets/point_content.dart';
 import 'package:school_management_system/modules/home/widgets/saving_content.dart';
 import 'package:school_management_system/modules/home/widgets/student_content.dart';
@@ -122,16 +123,17 @@ class _StudentPageState extends State<StudentPage> {
     final TabViewController tabController = Get.find<TabViewController>();
     final StudentController studentController = Get.find<StudentController>();
 
+
     final classOption = [
-      "",
-      "A",
-      "B",
+      DropdownOption(value: "", label: "Semua Kelas"),
+      DropdownOption(value: "A", label: "Kelas A"),
+      DropdownOption(value: "B", label: "Kelas B"),
     ];
 
     final genderOption = [
-      "",
-      "p",
-      "l",
+      DropdownOption(label: "Semua Gender", value: ""),
+      DropdownOption(label: "Perempuan", value: "p"),
+      DropdownOption(label: "Laki-laki", value: "l"),
     ];
 
     final studentOption = [
@@ -153,7 +155,7 @@ class _StudentPageState extends State<StudentPage> {
       builder: (BuildContext context) {
         return Obx(() => Container(
             width: double.infinity,
-            height: tabController.currentTabIndex.value == 0 ? 300 : 450,
+            height: tabController.currentTabIndex.value == 0 ? 350 : 500,
             padding: const EdgeInsets.all(AppSizes.paddingLarge),
             decoration: const BoxDecoration(
               color: AppColors.white,
@@ -164,6 +166,41 @@ class _StudentPageState extends State<StudentPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Row(
+                  children: [
+                    const Text("Filter",
+                        style: TextStyle(
+                          color: AppColors.text,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        )),
+                    const Spacer(),
+                    TextButton(
+                      onPressed: () {
+                        studentController.resetFilter();
+                        Get.back();
+                      },
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 5,
+                        ),
+                        foregroundColor: AppColors.primary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: const Text(
+                        "Reset",
+                        style: TextStyle(
+                          color: AppColors.primary,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -210,15 +247,16 @@ class _StudentPageState extends State<StudentPage> {
                           ),
                           style: const TextStyle(
                               color: AppColors.textLight, fontSize: 14),
-                          value: studentController.classFilter.value,
-                          items: classOption.map((String value) {
+                          value: studentController.temporaryClassFilter.value,
+                          items: classOption.map((value) {
                             return DropdownMenuItem(
-                              value: value,
+                              value: value.value,
                               onTap: () => {
-                                studentController.classFilter.value = value,
+                                studentController.temporaryClassFilter.value =
+                                    value.value,
                               },
                               child: Text(
-                                value == "" ? "Semua Kelas" : "Kelas $value",
+                                value.label,
                                 style: const TextStyle(
                                   color: AppColors.text,
                                   fontSize: 14,
@@ -281,20 +319,17 @@ class _StudentPageState extends State<StudentPage> {
                                   ),
                                   style: const TextStyle(
                                       color: AppColors.textLight, fontSize: 14),
-                                  value: studentController.genderFilter.value,
-                                  items: genderOption.map((String value) {
+                                  value: studentController
+                                      .temporaryGenderFilter.value,
+                                  items: genderOption.map((value) {
                                     return DropdownMenuItem(
-                                      value: value,
+                                      value: value.value,
                                       onTap: () => {
-                                        studentController.genderFilter.value =
-                                            value,
+                                        studentController.temporaryGenderFilter
+                                            .value = value.value,
                                       },
                                       child: Text(
-                                        value == ""
-                                            ? "Semua Gender"
-                                            : value == "p"
-                                                ? "Perempuan"
-                                                : "Laki-laki",
+                                        value.label,
                                         style: const TextStyle(
                                           color: AppColors.text,
                                           fontSize: 14,
@@ -532,6 +567,10 @@ class _StudentPageState extends State<StudentPage> {
                   child: TextButton(
                     onPressed: () {
                       Get.back();
+                      studentController.classFilter.value =
+                          studentController.temporaryClassFilter.value;
+                      studentController.genderFilter.value =
+                          studentController.temporaryGenderFilter.value;
                       studentController.fetchAllStudent();
                     },
                     style: TextButton.styleFrom(
