@@ -10,7 +10,6 @@ import 'package:school_management_system/shared/themes/app_texts.dart';
 import 'package:school_management_system/shared/widgets/app_badge.dart';
 import 'package:school_management_system/shared/widgets/empty_data.dart';
 import 'package:school_management_system/shared/widgets/information.dart';
-import 'package:shimmer/shimmer.dart';
 
 class StudentContent extends StatelessWidget {
   const StudentContent({super.key});
@@ -23,35 +22,14 @@ class StudentContent extends StatelessWidget {
       slivers: [
         Obx(() {
           if (studentController.isFetching.value) {
-            return SliverPadding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSizes.paddingMedium,
-                vertical: AppSizes.paddingMedium,
-              ),
-              sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    return SizedBox(
-                      width: double.infinity,
-                      height: 150,
-                      child: Shimmer.fromColors(
-                        baseColor: AppColors.textLight.withOpacity(0.5),
-                        highlightColor: AppColors.background,
-                        child: Container(
-                          margin: const EdgeInsets.only(
-                            bottom: AppSizes.paddingMedium,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.textLight.withOpacity(0.5),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          width: double.infinity,
-                          height: 100,
-                        ),
-                      ),
-                    );
-                  },
-                  childCount: 5,
+            return SliverToBoxAdapter(
+              child: SizedBox(
+                height: Get.height - 250,
+                child: const Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation(AppColors.primary),
+                    strokeWidth: 3,
+                  ),
                 ),
               ),
             );

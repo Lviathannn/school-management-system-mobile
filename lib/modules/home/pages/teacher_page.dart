@@ -13,7 +13,6 @@ import 'package:school_management_system/shared/themes/app_texts.dart';
 import 'package:school_management_system/shared/widgets/app_badge.dart';
 import 'package:school_management_system/shared/widgets/empty_data.dart';
 import 'package:school_management_system/shared/widgets/information.dart';
-import 'package:shimmer/shimmer.dart';
 
 class TeacherPage extends StatelessWidget {
   const TeacherPage({super.key});
@@ -90,35 +89,14 @@ class TeacherPage extends StatelessWidget {
         slivers: [
           Obx(() {
             if (controller.isFetching.value) {
-              return SliverPadding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSizes.paddingMedium,
-                  vertical: AppSizes.paddingMedium,
-                ),
-                sliver: SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      return SizedBox(
-                        width: double.infinity,
-                        height: 200,
-                        child: Shimmer.fromColors(
-                          baseColor: AppColors.textLight.withOpacity(0.5),
-                          highlightColor: AppColors.background,
-                          child: Container(
-                            margin: const EdgeInsets.only(
-                              bottom: AppSizes.paddingMedium,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.textLight.withOpacity(0.5),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            width: double.infinity,
-                            height: 100,
-                          ),
-                        ),
-                      );
-                    },
-                    childCount: 5,
+              return SliverToBoxAdapter(
+                child: SizedBox(
+                  height: Get.height - 250,
+                  child: const Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation(AppColors.primary),
+                      strokeWidth: 3,
+                    ),
                   ),
                 ),
               );
@@ -189,21 +167,21 @@ class TeacherPage extends StatelessWidget {
       barrierColor: Colors.black.withOpacity(0.5),
       builder: (BuildContext context) {
         return Obx(() => Container(
-          width: double.infinity,
+              width: double.infinity,
               height: 420,
-          padding: const EdgeInsets.all(AppSizes.paddingLarge),
-          decoration: const BoxDecoration(
-            color: AppColors.white,
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(20),
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
+              padding: const EdgeInsets.all(AppSizes.paddingLarge),
+              decoration: const BoxDecoration(
+                color: AppColors.white,
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(20),
+                ),
+              ),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                       Row(
                         children: [
                           const Text("Filter",
@@ -239,214 +217,214 @@ class TeacherPage extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 20),
-                  const Text(
-                    "Kelas",
-                    style: TextStyle(
-                      color: AppColors.text,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  SizedBox(
-                    width: double.infinity,
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton2(
-                        isExpanded: true,
-                        buttonStyleData: ButtonStyleData(
-                          padding: const EdgeInsets.only(right: 10),
-                          decoration: BoxDecoration(
-                            color: AppColors.background,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                      const Text(
+                        "Kelas",
+                        style: TextStyle(
+                          color: AppColors.text,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
                         ),
-                        iconStyleData: const IconStyleData(
-                          icon: Icon(
-                            HugeIcons.strokeRoundedArrowDown01,
-                            color: AppColors.textLight,
-                          ),
-                        ),
-                        dropdownStyleData: DropdownStyleData(
-                          decoration: BoxDecoration(
-                            color: AppColors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.2),
-                                spreadRadius: 1,
-                                blurRadius: 5,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                        ),
-                        style: const TextStyle(
-                            color: AppColors.textLight, fontSize: 14),
-                            value: controller.temporaryRoleFilter.value,
-                            items: roleOption.map((value) {
-                          return DropdownMenuItem(
-                                value: value.value,
-                            child: Text(
-                                  value.label,
-                              style: const TextStyle(
-                                color: AppColors.text,
-                                fontSize: 14,
+                      ),
+                      const SizedBox(height: 5),
+                      SizedBox(
+                        width: double.infinity,
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton2(
+                            isExpanded: true,
+                            buttonStyleData: ButtonStyleData(
+                              padding: const EdgeInsets.only(right: 10),
+                              decoration: BoxDecoration(
+                                color: AppColors.background,
+                                borderRadius: BorderRadius.circular(10),
                               ),
                             ),
-                          );
-                        }).toList(),
+                            iconStyleData: const IconStyleData(
+                              icon: Icon(
+                                HugeIcons.strokeRoundedArrowDown01,
+                                color: AppColors.textLight,
+                              ),
+                            ),
+                            dropdownStyleData: DropdownStyleData(
+                              decoration: BoxDecoration(
+                                color: AppColors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            style: const TextStyle(
+                                color: AppColors.textLight, fontSize: 14),
+                            value: controller.temporaryRoleFilter.value,
+                            items: roleOption.map((value) {
+                              return DropdownMenuItem(
+                                value: value.value,
+                                child: Text(
+                                  value.label,
+                                  style: const TextStyle(
+                                    color: AppColors.text,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
                             onChanged: (value) {
                               controller.temporaryRoleFilter.value =
                                   value.toString();
                             },
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Gender",
-                    style: TextStyle(
-                      color: AppColors.text,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  SizedBox(
-                    width: double.infinity,
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton2(
-                        isExpanded: true,
-                        buttonStyleData: ButtonStyleData(
-                          padding: const EdgeInsets.only(right: 10),
-                          decoration: BoxDecoration(
-                            color: AppColors.background,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                  const SizedBox(height: 10),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Gender",
+                        style: TextStyle(
+                          color: AppColors.text,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
                         ),
-                        iconStyleData: const IconStyleData(
-                          icon: Icon(
-                            HugeIcons.strokeRoundedArrowDown01,
-                            color: AppColors.textLight,
-                          ),
-                        ),
-                        dropdownStyleData: DropdownStyleData(
-                          decoration: BoxDecoration(
-                            color: AppColors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.2),
-                                spreadRadius: 1,
-                                blurRadius: 5,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                        ),
-                        style: const TextStyle(
-                            color: AppColors.textLight, fontSize: 14),
-                            value: controller.temporaryGenderFilter.value,
-                            items: genderOption.map((value) {
-                          return DropdownMenuItem(
-                                value: value.value,
-                            child: Text(
-                                  value.label,
-                              style: const TextStyle(
-                                color: AppColors.text,
-                                fontSize: 14,
+                      ),
+                      const SizedBox(height: 5),
+                      SizedBox(
+                        width: double.infinity,
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton2(
+                            isExpanded: true,
+                            buttonStyleData: ButtonStyleData(
+                              padding: const EdgeInsets.only(right: 10),
+                              decoration: BoxDecoration(
+                                color: AppColors.background,
+                                borderRadius: BorderRadius.circular(10),
                               ),
                             ),
-                          );
-                        }).toList(),
+                            iconStyleData: const IconStyleData(
+                              icon: Icon(
+                                HugeIcons.strokeRoundedArrowDown01,
+                                color: AppColors.textLight,
+                              ),
+                            ),
+                            dropdownStyleData: DropdownStyleData(
+                              decoration: BoxDecoration(
+                                color: AppColors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            style: const TextStyle(
+                                color: AppColors.textLight, fontSize: 14),
+                            value: controller.temporaryGenderFilter.value,
+                            items: genderOption.map((value) {
+                              return DropdownMenuItem(
+                                value: value.value,
+                                child: Text(
+                                  value.label,
+                                  style: const TextStyle(
+                                    color: AppColors.text,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
                             onChanged: (value) {
                               controller.temporaryGenderFilter.value =
                                   value.toString();
                             },
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Pendidikan Terakhir",
-                    style: TextStyle(
-                      color: AppColors.text,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  SizedBox(
-                    width: double.infinity,
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton2(
-                        isExpanded: true,
-                        buttonStyleData: ButtonStyleData(
-                          padding: const EdgeInsets.only(right: 10),
-                          decoration: BoxDecoration(
-                            color: AppColors.background,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                  const SizedBox(height: 10),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Pendidikan Terakhir",
+                        style: TextStyle(
+                          color: AppColors.text,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
                         ),
-                        iconStyleData: const IconStyleData(
-                          icon: Icon(
-                            HugeIcons.strokeRoundedArrowDown01,
-                            color: AppColors.textLight,
-                          ),
-                        ),
-                        dropdownStyleData: DropdownStyleData(
-                          decoration: BoxDecoration(
-                            color: AppColors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.2),
-                                spreadRadius: 1,
-                                blurRadius: 5,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                        ),
-                        style: const TextStyle(
-                            color: AppColors.textLight, fontSize: 14),
-                            value: controller.temporaryDegreeFilter.value,
-                            items: degreeOption.map((value) {
-                          return DropdownMenuItem(
-                                value: value.value,
-                            child: Text(
-                                  value.label,
-                              style: const TextStyle(
-                                color: AppColors.text,
-                                fontSize: 14,
+                      ),
+                      const SizedBox(height: 5),
+                      SizedBox(
+                        width: double.infinity,
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton2(
+                            isExpanded: true,
+                            buttonStyleData: ButtonStyleData(
+                              padding: const EdgeInsets.only(right: 10),
+                              decoration: BoxDecoration(
+                                color: AppColors.background,
+                                borderRadius: BorderRadius.circular(10),
                               ),
                             ),
-                          );
-                        }).toList(),
+                            iconStyleData: const IconStyleData(
+                              icon: Icon(
+                                HugeIcons.strokeRoundedArrowDown01,
+                                color: AppColors.textLight,
+                              ),
+                            ),
+                            dropdownStyleData: DropdownStyleData(
+                              decoration: BoxDecoration(
+                                color: AppColors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            style: const TextStyle(
+                                color: AppColors.textLight, fontSize: 14),
+                            value: controller.temporaryDegreeFilter.value,
+                            items: degreeOption.map((value) {
+                              return DropdownMenuItem(
+                                value: value.value,
+                                child: Text(
+                                  value.label,
+                                  style: const TextStyle(
+                                    color: AppColors.text,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
                             onChanged: (value) {
                               controller.temporaryDegreeFilter.value =
                                   value.toString();
                             },
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-              const Spacer(),
-              SizedBox(
-                width: double.infinity,
-                child: TextButton(
-                  onPressed: () {
+                  const Spacer(),
+                  SizedBox(
+                    width: double.infinity,
+                    child: TextButton(
+                      onPressed: () {
                         controller.genderFilter.value =
                             controller.temporaryGenderFilter.value;
                         controller.roleFilter.value =
@@ -454,29 +432,28 @@ class TeacherPage extends StatelessWidget {
                         controller.degreeFilter.value =
                             controller.temporaryDegreeFilter.value;
                         controller.fetchAllTeacher();
-                    Get.back();
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 20),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                        Get.back();
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 20),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: const Text(
+                        "Terapkan",
+                        style: TextStyle(
+                          color: AppColors.white,
+                          fontSize: 14,
+                        ),
+                      ),
                     ),
                   ),
-                  child: const Text(
-                    "Terapkan",
-                    style: TextStyle(
-                      color: AppColors.white,
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
+                ],
               ),
-            ],
-          ),
-            )
-      );
+            ));
       },
     );
   }

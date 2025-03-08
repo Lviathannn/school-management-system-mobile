@@ -23,18 +23,13 @@ Future<void> downloadFile(String url, String fileName) async {
   try {
     Dio dio = Dio();
 
-    if (Platform.isAndroid) {
-      var status = await Permission.storage.request();
-      if (!status.isGranted) {
-        Get.snackbar(
-          "Izin Ditolak",
-          "Izin penyimpanan diperlukan untuk mengunduh file.",
-          colorText: Colors.red,
-        );
-        return;
-      }
-    }
-    Directory? downloadsDir = await getExternalStorageDirectory();
+Map<Permission, PermissionStatus> statuses = await [
+      Permission.storage,
+    ].request();
+
+    if (statuses[Permission.storage]!.isGranted) {
+      Directory? downloadsDir = await getDownloadsDirectory();
+        
     String downloadPath = "/storage/emulated/0/Download";
     if (downloadsDir != null) {
       downloadPath = downloadsDir.path;
@@ -61,6 +56,15 @@ Future<void> downloadFile(String url, String fileName) async {
     );
 
     OpenFile.open(savePath);
+    } else {
+      Get.snackbar(
+        "Izin Ditolak",
+        "Izin penyimpanan diperlukan untuk mengunduh file.",
+        colorText: Colors.red,
+      );
+      return;
+    }
+
   } catch (e) {
     Get.snackbar(
       "Download Gagal!",
