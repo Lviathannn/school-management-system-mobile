@@ -5,7 +5,6 @@ import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
 import 'package:get/get.dart';
-import 'package:school_management_system/shared/themes/app_colors.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 String formatRupiah(int number, {bool withSymbol = true}) {
@@ -19,52 +18,50 @@ String formatRupiah(int number, {bool withSymbol = true}) {
 
 
 
+
 Future<void> downloadFile(String url, String fileName) async {
   try {
     Dio dio = Dio();
 
-Map<Permission, PermissionStatus> statuses = await [
-      Permission.storage,
-    ].request();
+    if (Platform.isAndroid) {
+      if (await Permission.storage.request().isDenied) {
+        Get.snackbar(
+          "Izin Ditolak",
+          "Izin penyimpanan diperlukan untuk mengunduh file.",
+          colorText: Colors.red,
+        );
+        return;
+      }
+    }
 
-    if (statuses[Permission.storage]!.isGranted) {
-      Directory? downloadsDir = await getDownloadsDirectory();
-        
+    // 🔹 Dapatkan path folder Download
     String downloadPath = "/storage/emulated/0/Download";
-    if (downloadsDir != null) {
+    if (Platform.isIOS) {
+      Directory? downloadsDir = await getApplicationDocumentsDirectory();
       downloadPath = downloadsDir.path;
     }
 
-    String fileExtention = url.contains('.pdf')
+    String fileExtension = url.contains('.pdf')
         ? '.pdf'
         : url.contains('.png')
             ? '.png'
             : '.jpg';
 
     String savePath =
-        "$downloadPath/${fileName.replaceAll(" ", "-")}$fileExtention";
+        "$downloadPath/${fileName.replaceAll(" ", "-")}$fileExtension";
 
-    Get.snackbar("Sedang Mendownload File!", "File Sedang di download...");
+    Get.snackbar("Sedang Mendownload File!", "File sedang diunduh...");
 
-    await dio.download(url, savePath, onReceiveProgress: (count, total) {});
+    await dio.download(url, savePath);
 
     Get.snackbar(
       "Download Selesai!",
       "File tersimpan di: $savePath",
-      colorText: AppColors.primary,
+      colorText: Colors.green,
       duration: const Duration(seconds: 3),
     );
 
     OpenFile.open(savePath);
-    } else {
-      Get.snackbar(
-        "Izin Ditolak",
-        "Izin penyimpanan diperlukan untuk mengunduh file.",
-        colorText: Colors.red,
-      );
-      return;
-    }
-
   } catch (e) {
     Get.snackbar(
       "Download Gagal!",
