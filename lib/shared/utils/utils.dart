@@ -6,7 +6,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
 import 'package:get/get.dart';
 import 'package:school_management_system/shared/themes/app_colors.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 String formatRupiah(int number, {bool withSymbol = true}) {
   final formatter = NumberFormat.currency(
@@ -21,11 +20,7 @@ Future<void> downloadFile(String url, String fileName) async {
   try {
     Dio dio = Dio();
 
-    Map<Permission, PermissionStatus> statuses = await [
-      Permission.storage,
-    ].request();
 
-    if (statuses[Permission.storage]!.isGranted) {
       Directory? downloadsDir = await getDownloadsDirectory();
 
       String downloadPath = "/storage/emulated/0/Download";
@@ -53,15 +48,7 @@ Future<void> downloadFile(String url, String fileName) async {
         duration: const Duration(seconds: 3),
       );
 
-      OpenFile.open(savePath);
-    } else {
-      Get.snackbar(
-        "Izin Ditolak",
-        "Izin penyimpanan diperlukan untuk mengunduh file.",
-        colorText: Colors.red,
-      );
-      return;
-    }
+    OpenFile.open(savePath);
   } catch (e) {
     Get.snackbar(
       "Download Gagal!",
