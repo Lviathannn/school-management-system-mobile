@@ -21,12 +21,9 @@ Future<void> downloadFile(String url, String fileName) async {
     Dio dio = Dio();
 
 
-      Directory? downloadsDir = await getDownloadsDirectory();
+    Directory? downloadsDir = await getExternalStorageDirectory();
 
-      String downloadPath = "/storage/emulated/0/Download";
-      if (downloadsDir != null) {
-        downloadPath = downloadsDir.path;
-      }
+      
 
       String fileExtention = url.contains('.pdf')
           ? '.pdf'
@@ -35,7 +32,7 @@ Future<void> downloadFile(String url, String fileName) async {
               : '.jpg';
 
       String savePath =
-          "$downloadPath/${fileName.replaceAll(" ", "-")}$fileExtention";
+        "${downloadsDir!.path}/${fileName.replaceAll(" ", "-")}$fileExtention";
 
       Get.snackbar("Sedang Mendownload File!", "File Sedang di download...");
 
