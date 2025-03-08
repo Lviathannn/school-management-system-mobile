@@ -26,7 +26,7 @@ class TeacherService {
         query = query.eq("degree", degreeFilter);
       }
 
-      final response = await query;
+      final response = await query.order("name", ascending: true);
       final data = response.map((e) => TeacherModel.fromJson(e)).toList();
       return data;
     } catch (e) {

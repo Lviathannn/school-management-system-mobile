@@ -22,7 +22,7 @@ class StudentService {
         query = query.eq("student_class", classFilter);
       }
 
-      final response = await query;
+      final response = await query.order("name", ascending: true);
       final data = response.map((e) => StudentModel.fromJson(e)).toList();
       return data;
     } catch (e) {

@@ -23,8 +23,6 @@ Future<void> downloadFile(String url, String fileName) async {
 
     Directory? downloadsDir = await getExternalStorageDirectory();
 
-      
-
       String fileExtention = url.contains('.pdf')
           ? '.pdf'
           : url.contains('.png')
