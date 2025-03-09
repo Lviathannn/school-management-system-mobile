@@ -136,6 +136,12 @@ class _StudentPageState extends State<StudentPage> {
       DropdownOption(label: "Laki-laki", value: "l"),
     ];
 
+    final savingTypeOption = [
+      DropdownOption(label: "Semua Tabungan", value: ""),
+      DropdownOption(label: "Masuk", value: "income"),
+      DropdownOption(label: "Keluar", value: "outcome"),
+    ];
+
     return showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -146,7 +152,11 @@ class _StudentPageState extends State<StudentPage> {
       builder: (BuildContext context) {
         return Obx(() => Container(
             width: double.infinity,
-            height: tabController.currentTabIndex.value == 0 ? 350 : 420,
+            height: tabController.currentTabIndex.value == 0
+                ? 350
+                : tabController.currentTabIndex.value == 1
+                    ? 480
+                    : 420,
             padding: const EdgeInsets.all(AppSizes.paddingLarge),
             decoration: const BoxDecoration(
               color: AppColors.white,
@@ -336,6 +346,88 @@ class _StudentPageState extends State<StudentPage> {
                         )
                       : Column(
                           children: [
+                            tabController.currentTabIndex.value == 1
+                                ? Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        "Status",
+                                        style: TextStyle(
+                                          color: AppColors.text,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      SizedBox(
+                                        width: double.infinity,
+                                        child: DropdownButtonHideUnderline(
+                                          child: DropdownButton2(
+                                            isExpanded: true,
+                                            buttonStyleData: ButtonStyleData(
+                                              padding: const EdgeInsets.only(
+                                                  right: 10),
+                                              decoration: BoxDecoration(
+                                                color: AppColors.background,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                            ),
+                                            iconStyleData: const IconStyleData(
+                                              icon: Icon(
+                                                HugeIcons
+                                                    .strokeRoundedArrowDown01,
+                                                color: AppColors.textLight,
+                                              ),
+                                            ),
+                                            dropdownStyleData:
+                                                DropdownStyleData(
+                                              decoration: BoxDecoration(
+                                                color: AppColors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey
+                                                        .withOpacity(0.2),
+                                                    spreadRadius: 1,
+                                                    blurRadius: 5,
+                                                    offset: const Offset(0, 2),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            style: const TextStyle(
+                                                color: AppColors.textLight,
+                                                fontSize: 14),
+                                            value: studentController
+                                                .temporarySavingType.value,
+                                            items:
+                                                savingTypeOption.map((value) {
+                                              return DropdownMenuItem(
+                                                value: value.value,
+                                                onTap: () => {
+                                                  studentController
+                                                      .temporarySavingType
+                                                      .value = value.value,
+                                                },
+                                                child: Text(
+                                                  value.label,
+                                                  style: const TextStyle(
+                                                    color: AppColors.text,
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList(),
+                                            onChanged: (value) {},
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : const SizedBox(),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -443,7 +535,7 @@ class _StudentPageState extends State<StudentPage> {
                                         child: RangeDatePicker(
                                           onRangeSelected: (value) => {
                                             studentController
-                                                .temporaarySelectedDate
+                                                .temporarySelectedDate
                                                 .value = value,
                                             Get.back(),
                                           },
@@ -519,7 +611,7 @@ class _StudentPageState extends State<StudentPage> {
                                       ),
                                     ),
                                     child: Obx(() => studentController
-                                                .temporaarySelectedDate.value ==
+                                                .temporarySelectedDate.value ==
                                             null
                                         ? const Text(
                                             "Pilih Tanggal",
@@ -539,7 +631,7 @@ class _StudentPageState extends State<StudentPage> {
                                                 Text(
                                                   DateFormat('dd MMMM yyyy')
                                                       .format(studentController
-                                                          .temporaarySelectedDate
+                                                          .temporarySelectedDate
                                                           .value!
                                                           .start),
                                                   style: const TextStyle(
@@ -558,7 +650,7 @@ class _StudentPageState extends State<StudentPage> {
                                                   DateFormat('dd MMMM yyyy')
                                                       .format(
                                                     studentController
-                                                        .temporaarySelectedDate
+                                                        .temporarySelectedDate
                                                         .value!
                                                         .end,
                                                   ),
@@ -590,10 +682,13 @@ class _StudentPageState extends State<StudentPage> {
                       studentController.recorderFilter.value =
                           studentController.temporaryRecorderFilter.value;
                       studentController.selectedDate.value =
-                          studentController.temporaarySelectedDate.value;
+                          studentController.temporarySelectedDate.value;
+                      studentController.savingType.value =
+                          studentController.temporarySavingType.value;
 
                       studentController.fetchAllStudent();
                       studentController.fetchAllStar();
+                      studentController.fetchAllSavings();
                     },
                     style: TextButton.styleFrom(
                       backgroundColor: AppColors.primary,

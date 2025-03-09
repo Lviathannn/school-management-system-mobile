@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:get/get.dart';
 import 'package:school_management_system/modules/teacher_detail/models/teacher_detail_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -14,7 +12,6 @@ class TeacherDetailService {
           .eq('id', teacherId)
           .single();
 
-      log('response: $response');
 
       return TeacherDetailModel.fromJson(response);
     } catch (e) {

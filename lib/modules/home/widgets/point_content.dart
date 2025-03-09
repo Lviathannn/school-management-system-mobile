@@ -37,7 +37,7 @@ class PointContent extends StatelessWidget {
           if (controller.star.isEmpty) {
             return const SliverToBoxAdapter(
                 child: EmptyData(
-              message: 'Tidak ada data tabungan',
+              message: 'Tidak ada data nilai',
             ));
           }
 
