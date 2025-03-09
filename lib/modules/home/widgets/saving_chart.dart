@@ -5,24 +5,22 @@ import 'package:school_management_system/shared/themes/app_texts.dart';
 import 'package:school_management_system/shared/utils/utils.dart';
 
 class SavingChart extends StatelessWidget {
-  const SavingChart({super.key});
+  final List<double> data;
+  const SavingChart({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
-    final List<double> savingData = [
-      5000000,
-      6500000,
-      7000000,
-      7800000,
-      8000000,
-      9200000,
-      9500000,
-      9800000,
-      10000000,
-      9500000,
-      9000000,
-      8500000,
-    ];
+    double maxIncome = data.reduce((a, b) => a > b ? a : b);
+    double maxY;
+
+    if (maxIncome > 0) {
+      maxY = (maxIncome / 1000000).ceil() * 1000000;
+    } else {
+      maxY = 2000000;
+    }
+
+    double yInterval = maxY / 5;
+
     final List<String> months = [
       'Jan',
       'Feb',
@@ -42,7 +40,7 @@ class SavingChart extends StatelessWidget {
       LineChartData(
         gridData: FlGridData(
           show: true,
-          horizontalInterval: 4000000,
+          horizontalInterval: maxY,
           verticalInterval: 2,
           getDrawingHorizontalLine: (value) => const FlLine(
             color: AppColors.textLight,
@@ -65,10 +63,13 @@ class SavingChart extends StatelessWidget {
               showTitles: true,
               getTitlesWidget: (value, meta) {
                 if (value.toInt() < months.length) {
-                  return Text(
-                    months[value.toInt()],
-                    style: const TextStyle(
-                        fontSize: 10, color: AppColors.textLight),
+                  return Container(
+                    margin: const EdgeInsets.only(top: 10),
+                    child: Text(
+                      months[value.toInt()],
+                      style: const TextStyle(
+                          fontSize: 10, color: AppColors.textLight),
+                    ),
                   );
                 }
                 return const SizedBox.shrink();
@@ -77,17 +78,22 @@ class SavingChart extends StatelessWidget {
           ),
           leftTitles: AxisTitles(
             sideTitles: SideTitles(
+              reservedSize: 30,
               showTitles: true,
-              interval: 2000000, // Interval label pada sumbu Y (2 juta)
+              interval: yInterval,
               getTitlesWidget: (value, meta) {
-                // Menampilkan nilai dalam format jutaan
-                return Text(
-                  '${(value / 1000000).toStringAsFixed(0)}jt',
-                  style: const TextStyle(
-                    fontSize: 10,
-                    color: AppColors.textLight,
-                  ),
-                );
+                if (value % yInterval == 0) {
+                  double valueInt = value / 1000;
+                  return Text(
+                    valueInt >= 1000
+                        ? '${(valueInt / 1000)}jt'
+                        : '${valueInt.toStringAsFixed(0)}k',
+                    style: const TextStyle(
+                        fontSize: 10, color: AppColors.textLight),
+                    maxLines: 1,
+                  );
+                }
+                return const SizedBox.shrink();
               },
             ),
           ),
@@ -116,7 +122,7 @@ class SavingChart extends StatelessWidget {
                 end: Alignment.centerRight,
               ),
             ),
-            spots: savingData
+            spots: data
                 .asMap()
                 .entries
                 .map((entry) => FlSpot(entry.key.toDouble(), entry.value))
@@ -127,9 +133,8 @@ class SavingChart extends StatelessWidget {
           ),
         ],
         minX: 0,
-        maxX: savingData.length - 1,
+        maxX: data.length - 1,
         minY: 0,
-        maxY: 10000000, // Maksimal nilai pada sumbu Y (10 juta)
         lineTouchData: LineTouchData(
           touchTooltipData: LineTouchTooltipData(
             getTooltipItems: (touchedSpots) => touchedSpots

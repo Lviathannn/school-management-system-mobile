@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:school_management_system/modules/home/controllers/student_controller.dart';
 import 'package:school_management_system/modules/home/controllers/teacher_controller.dart';
+import 'package:school_management_system/modules/home/controllers/income_controller.dart';
 import 'package:school_management_system/shared/themes/app_colors.dart';
 import '../controllers/home_controller.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -15,6 +16,7 @@ class BottomNavbar extends StatelessWidget {
     final HomeController controller = Get.find();
     final StudentController studentController = Get.put(StudentController());
     final TeacherController teacherController = Get.put(TeacherController());
+    final IncomeController incomeController = Get.put(IncomeController());
 
     const textStyle = TextStyle(
       fontSize: 12,
@@ -55,9 +57,11 @@ class BottomNavbar extends StatelessWidget {
               duration: const Duration(milliseconds: 400),
               curve: Curves.easeInOut,
             );
+
             controller.changeTabIndex(index);
             studentController.resetFilter();
             teacherController.resetFilter();
+            incomeController.resetFilter();
           },
         ),
       ),

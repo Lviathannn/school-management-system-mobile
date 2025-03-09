@@ -8,9 +8,10 @@ class DashboardCard extends StatelessWidget {
   final String title;
   final String subtitle;
   final IconData icon;
-  final String value;
+  final String? value;
   final String description;
   final Color color;
+  final bool isFetching;
 
   const DashboardCard({
     super.key,
@@ -20,6 +21,7 @@ class DashboardCard extends StatelessWidget {
     required this.color,
     required this.value,
     required this.description,
+    required this.isFetching,
   });
 
   @override
@@ -55,14 +57,32 @@ class DashboardCard extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                value,
-                style: AppTextStyles.heading,
-              ),
-              Text(
-                description,
-                style: AppTextStyles.body,
-              ),
+              isFetching
+                  ? Container(
+                      width: 150,
+                      height: 25,
+                      margin: const EdgeInsets.only(bottom: 5),
+                      decoration: BoxDecoration(
+                        color: AppColors.textLight.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(10),
+                      ))
+                  : Text(
+                      value.toString(),
+                      style: AppTextStyles.heading,
+                    ),
+              isFetching
+                  ? Container(
+                      width: 100,
+                      height: 20,
+                      margin: const EdgeInsets.only(bottom: 5),
+                      decoration: BoxDecoration(
+                        color: AppColors.textLight.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(10),
+                      ))
+                  : Text(
+                      description,
+                      style: AppTextStyles.body,
+                    ),
             ],
           ),
         ],

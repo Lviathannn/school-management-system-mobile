@@ -49,14 +49,49 @@ class HomeView extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Halo, Anwar Sanusi!',
+                    Obx(
+                      () => profileController.isFetching.value
+                          ? Container(
+                              width: 100,
+                              height: 20,
+                              decoration: BoxDecoration(
+                                color: AppColors.textLight.withOpacity(0.15),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            )
+                          : Text(
+                              'Halo, ${profileController.user.value?.name}!',
                         style: AppTextStyles.bodyBold.copyWith(
                           fontSize: 16,
-                        )),
-                    Text('Kepala Sekolah',
-                        style: AppTextStyles.body.copyWith(
-                          color: AppColors.textLight,
-                        )),
+                              ),
+                            ),
+                    ),
+                    const SizedBox(height: 5),
+                    Obx(
+                      () => profileController.isFetching.value
+                          ? Container(
+                              width: 70,
+                              height: 20,
+                              decoration: BoxDecoration(
+                                color: AppColors.textLight.withOpacity(0.15),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            )
+                          : Text(
+                              profileController.user.value?.role == "Kepala"
+                                  ? "Kepala Sekolah"
+                                  : profileController.user.value?.role == "TU"
+                                      ? "Tata Usaha"
+                                      : profileController.user.value?.role ==
+                                              "A"
+                                          ? "Guru Kelas A"
+                                          : "Guru Kelas B",
+                              style: AppTextStyles.body.copyWith(
+                                color: AppColors.textLight,
+                              ),
+                            ),
+                    ),
+                   
                   ],
                 ),
               ],
@@ -104,3 +139,4 @@ class HomeView extends StatelessWidget {
     );
   }
 }
+

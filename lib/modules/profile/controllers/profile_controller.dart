@@ -35,6 +35,7 @@ class ProfileController extends GetxController {
       if (response != null) {
         user.value = response;
       }
+
       return response;
     } catch (e) {
       return null;
@@ -75,5 +76,5 @@ class ProfileController extends GetxController {
     } finally {
       isLoading.value = false;
     }
-  } 
+  }
 }

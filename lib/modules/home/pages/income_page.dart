@@ -155,7 +155,7 @@ class IncomePage extends StatelessWidget {
       builder: (BuildContext context) {
         return Container(
           width: double.infinity,
-          height: 400,
+          height: 430,
           padding: const EdgeInsets.all(AppSizes.paddingLarge),
           decoration: const BoxDecoration(
             color: AppColors.white,

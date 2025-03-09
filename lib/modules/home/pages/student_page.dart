@@ -155,8 +155,8 @@ class _StudentPageState extends State<StudentPage> {
             height: tabController.currentTabIndex.value == 0
                 ? 350
                 : tabController.currentTabIndex.value == 1
-                    ? 480
-                    : 420,
+                    ? 500
+                    : 430,
             padding: const EdgeInsets.all(AppSizes.paddingLarge),
             decoration: const BoxDecoration(
               color: AppColors.white,

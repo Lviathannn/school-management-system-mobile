@@ -168,7 +168,7 @@ class TeacherPage extends StatelessWidget {
       builder: (BuildContext context) {
         return Obx(() => Container(
               width: double.infinity,
-              height: 420,
+              height: 450,
               padding: const EdgeInsets.all(AppSizes.paddingLarge),
               decoration: const BoxDecoration(
                 color: AppColors.white,

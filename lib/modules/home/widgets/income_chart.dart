@@ -12,6 +12,17 @@ class IncomeChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double maxIncome = incomeData.reduce((a, b) => a > b ? a : b);
+    double maxY;
+
+    if (maxIncome > 0) {
+      maxY = (maxIncome / 1000000).ceil() * 1000000;
+    } else {
+      maxY = 2000000;
+    }
+
+    double yInterval = maxY / 4;
+
     return BarChart(
       BarChartData(
         alignment: BarChartAlignment.spaceAround,
@@ -33,42 +44,27 @@ class IncomeChart extends StatelessWidget {
         titlesData: FlTitlesData(
           show: true,
           rightTitles: const AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: false,
-            ),
+            sideTitles: SideTitles(showTitles: false),
           ),
           topTitles: const AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: false,
-            ),
+            sideTitles: SideTitles(showTitles: false),
           ),
           leftTitles: AxisTitles(
             sideTitles: SideTitles(
+              reservedSize: 30,
               showTitles: true,
-              interval: 500000, // Interval 500 ribu
+              interval: yInterval, // Set interval agar hanya ada 5 ticks
               getTitlesWidget: (value, meta) {
-                if (value % 500000 == 0) {
+                if (value % yInterval == 0) {
                   double valueInt = value / 1000;
-
-                  if (valueInt >= 1000) {
-                    return Text(
-                      '${(valueInt / 1000)}jt',
-                      style: const TextStyle(
-                        fontSize: 10,
-                        color: AppColors.textLight,
-                      ),
-                      maxLines: 1,
-                    );
-                  } else {
-                    return Text(
-                      '${(value / 1000).toStringAsFixed(0)}k',
-                      style: const TextStyle(
-                        fontSize: 10,
-                        color: AppColors.textLight,
-                      ),
-                      maxLines: 1,
-                    );
-                  }
+                  return Text(
+                    valueInt >= 1000
+                        ? '${(valueInt / 1000)}jt'
+                        : '${valueInt.toStringAsFixed(0)}k',
+                    style: const TextStyle(
+                        fontSize: 10, color: AppColors.textLight),
+                    maxLines: 1,
+                  );
                 }
                 return const SizedBox.shrink();
               },
@@ -90,23 +86,19 @@ class IncomeChart extends StatelessWidget {
                   'Sep',
                   'Oct',
                   'Nov',
-                  'Dec',
+                  'Dec'
                 ];
-                if (value.toInt() < months.length) {
-                  return Text(
-                    months[value.toInt()],
-                    style: AppTextStyles.caption.copyWith(fontSize: 10),
-                  );
-                }
-                return const SizedBox.shrink();
+                return value.toInt() < months.length
+                    ? Text(months[value.toInt()],
+                        style: AppTextStyles.caption.copyWith(fontSize: 10))
+                    : const SizedBox.shrink();
               },
             ),
           ),
         ),
         gridData: FlGridData(
           show: true,
-          horizontalInterval: 500000,
-          verticalInterval: 2,
+          horizontalInterval: yInterval, // Atur interval agar hanya ada 5 garis
           getDrawingHorizontalLine: (value) => const FlLine(
             color: AppColors.textLight,
             strokeWidth: 0.5,
@@ -137,9 +129,8 @@ class IncomeChart extends StatelessWidget {
                 'September',
                 'Oktober',
                 'November',
-                'Desember',
+                'Desember'
               ];
-
               return BarTooltipItem(
                 '${months[groupIndex]}: ${formatRupiah(rod.toY.toInt())}',
                 AppTextStyles.caption.copyWith(
@@ -148,9 +139,8 @@ class IncomeChart extends StatelessWidget {
             },
           ),
         ),
-        minY: 0, // Nilai minimum sumbu Y
-        maxY: (incomeData.reduce((a, b) => a > b ? a : b) / 500000).ceil() *
-            500000, // Nilai maksimum sumbu Y
+        minY: 0,
+        maxY: maxY, // Gunakan maxY yang sudah dihitung
       ),
     );
   }

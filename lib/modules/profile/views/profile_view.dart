@@ -55,6 +55,7 @@ class ProfilePage extends StatelessWidget {
     );
     final currentUser = profileController.currentUser;
 
+
     return Container(
       padding: const EdgeInsets.all(20),
       width: double.infinity,
@@ -68,27 +69,37 @@ class ProfilePage extends StatelessWidget {
               SizedBox(
                   width: 100,
                   height: 100,
-                  child: Obx(() {
-                    return CircleAvatar(
-                      backgroundColor: AppColors.primary.withOpacity(0.1),
-                      radius: 50,
-                      backgroundImage: profileController.user.value!.url.isEmpty
-                          ? const AssetImage(
-                              AppImages.man,
-                            )
-                          : NetworkImage(
-                              profileController.user.value!.url,
-                            ),
-                    );
-                  })),
+                  child: Obx(() => profileController.isFetching.value
+                      ? Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            color: AppColors.background,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        )
+                      : CircleAvatar(
+                          backgroundColor: AppColors.primary.withOpacity(0.1),
+                          radius: 50,
+                          backgroundImage:
+                              profileController.user.value!.url.isEmpty
+                                  ? const AssetImage(
+                                      AppImages.man,
+                                    )
+                                  : NetworkImage(
+                                      profileController.user.value!.url,
+                                    ),
+                        ))),
               const SizedBox(height: 10),
-              Obx(() => Text(
-                    profileController.user.value?.name ?? "-",
-                    style: AppTextStyles.bodyBold.copyWith(
-                      fontSize: 20,
-                      color: AppColors.text,
-                    ),
-                  )),
+              Obx(
+                () => Text(
+                  profileController.user.value?.name ?? "-",
+                  style: AppTextStyles.bodyBold.copyWith(
+                    fontSize: 20,
+                    color: AppColors.text,
+                  ),
+                ),
+              ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -123,6 +134,50 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: AppColors.background,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const HugeIcon(
+                          icon: HugeIcons.strokeRoundedTeacher,
+                          color: AppColors.textLight,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          "Jabatan",
+                          style: AppTextStyles.caption.copyWith(
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Obx(
+                      () => Text(
+                        profileController.user.value?.role == "Kepala"
+                            ? "Kepala Sekolah"
+                            : profileController.user.value?.role == "TU"
+                                ? "Tata Usaha"
+                                : profileController.user.value?.role == "A"
+                                    ? "Guru Kelas A"
+                                    : "Guru Kelas B",
+                        style: AppTextStyles.caption.copyWith(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(10),
@@ -257,6 +312,7 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
               onPressed: () {
+
                 Get.dialog(AlertDialog(
                   backgroundColor: AppColors.white,
                   title: const Text(
@@ -281,7 +337,7 @@ class ProfilePage extends StatelessWidget {
                         children: [
                           Expanded(
                             child: SizedBox(
-                              height: 40,
+                                height: 40,
                                 child: Obx(
                                   () => TextButton(
                                     style: TextButton.styleFrom(
@@ -317,8 +373,7 @@ class ProfilePage extends StatelessWidget {
                                             ),
                                           ),
                                   ),
-                                )
-                            ),
+                                )),
                           ),
                           const SizedBox(width: 10),
                           Expanded(

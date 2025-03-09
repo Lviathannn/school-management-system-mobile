@@ -7,7 +7,8 @@ import 'package:open_file/open_file.dart';
 import 'package:get/get.dart';
 import 'package:school_management_system/shared/themes/app_colors.dart';
 
-String formatRupiah(int number, {bool withSymbol = true}) {
+String formatRupiah(int? number, {bool withSymbol = true}) {
+  if (number == null) return 'Rp 0';
   final formatter = NumberFormat.currency(
     locale: 'id',
     symbol: withSymbol ? 'Rp ' : '',
