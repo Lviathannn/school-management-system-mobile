@@ -7,6 +7,7 @@ import 'package:school_management_system/modules/home/models/star_model.dart';
 import 'package:school_management_system/shared/themes/app_colors.dart';
 import 'package:school_management_system/shared/themes/app_sizes.dart';
 import 'package:school_management_system/shared/themes/app_texts.dart';
+import 'package:school_management_system/shared/widgets/app_badge.dart';
 import 'package:school_management_system/shared/widgets/empty_data.dart';
 
 class PointContent extends StatelessWidget {
@@ -33,7 +34,7 @@ class PointContent extends StatelessWidget {
             );
           }
 
-          if (controller.students.isEmpty) {
+          if (controller.star.isEmpty) {
             return const SliverToBoxAdapter(
                 child: EmptyData(
               message: 'Tidak ada data tabungan',
@@ -92,17 +93,15 @@ class StarItem extends StatelessWidget {
                 style:
                     AppTextStyles.caption.copyWith(fontWeight: FontWeight.w600),
               ),
-              Container(
-                padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: AppColors.yellow.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: const HugeIcon(
-                    icon: HugeIcons.strokeRoundedStar,
-                    color: AppColors.yellow,
-                    size: 16),
-              )
+              AppBadge(
+                backgroundColor: star.student_class == "A"
+                    ? AppColors.primary.withOpacity(0.1)
+                    : AppColors.red.withOpacity(0.1),
+                text: "Kelas ${star.student_class}",
+                color: star.student_class == "A"
+                    ? AppColors.primary
+                    : AppColors.red,
+              ),
             ],
           ),
           const SizedBox(height: 10),

@@ -34,4 +34,21 @@ class TeacherService {
       return null;
     }
   }
+
+  Future<List<String>?> getTeacherDropdownOptions() async {
+    try {
+      final supabase = Supabase.instance.client;
+      var query = supabase.from('teacher').select('name').order("name");
+
+      final response = await query;
+      final data = response.map((e) => e['name'] as String).toList();
+
+      data.insert(0, "");
+
+      return data;
+    } catch (e) {
+      Get.snackbar("Error", "$e");
+      return null;
+    }
+  }
 }

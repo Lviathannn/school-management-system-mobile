@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      color: Colors.white,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       defaultTransition: Transition.fade,

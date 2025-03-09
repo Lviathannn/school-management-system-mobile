@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:school_management_system/modules/home/controllers/student_controller.dart';
 import 'package:school_management_system/modules/home/controllers/tab_controller.dart';
 import 'package:school_management_system/modules/home/models/dropdown_option.dart';
@@ -10,6 +11,7 @@ import 'package:school_management_system/shared/themes/app_colors.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:school_management_system/shared/themes/app_sizes.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:date_picker_plus/date_picker_plus.dart';
 
 class StudentPage extends StatefulWidget {
   const StudentPage({super.key});
@@ -25,7 +27,6 @@ class _StudentPageState extends State<StudentPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -123,7 +124,6 @@ class _StudentPageState extends State<StudentPage> {
     final TabViewController tabController = Get.find<TabViewController>();
     final StudentController studentController = Get.find<StudentController>();
 
-
     final classOption = [
       DropdownOption(value: "", label: "Semua Kelas"),
       DropdownOption(value: "A", label: "Kelas A"),
@@ -136,15 +136,6 @@ class _StudentPageState extends State<StudentPage> {
       DropdownOption(label: "Laki-laki", value: "l"),
     ];
 
-    final studentOption = [
-      "Semua Siswa",
-      "Muhammad Iqbal",
-      "Muhammad Asrul",
-      "Muhammad Rizal",
-      "Muhammad Fadil",
-      "Athika Tsary"
-    ];
-
     return showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -155,7 +146,7 @@ class _StudentPageState extends State<StudentPage> {
       builder: (BuildContext context) {
         return Obx(() => Container(
             width: double.infinity,
-            height: tabController.currentTabIndex.value == 0 ? 350 : 500,
+            height: tabController.currentTabIndex.value == 0 ? 350 : 420,
             padding: const EdgeInsets.all(AppSizes.paddingLarge),
             decoration: const BoxDecoration(
               color: AppColors.white,
@@ -349,7 +340,7 @@ class _StudentPageState extends State<StudentPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
-                                  "Siswa",
+                                  "Pencatat",
                                   style: TextStyle(
                                     color: AppColors.text,
                                     fontWeight: FontWeight.w500,
@@ -396,12 +387,26 @@ class _StudentPageState extends State<StudentPage> {
                                       style: const TextStyle(
                                           color: AppColors.textLight,
                                           fontSize: 14),
-                                      value: studentOption[0],
-                                      items: studentOption.map((String value) {
+                                      value: studentController
+                                              .temporaryRecorderFilter
+                                              .value
+                                              .isEmpty
+                                          ? ""
+                                          : studentController
+                                              .temporaryRecorderFilter.value,
+                                      items: studentController.recorderOptions
+                                          .map((options) {
                                         return DropdownMenuItem(
-                                          value: value,
+                                          value: options,
+                                          onTap: () => {
+                                            studentController
+                                                .temporaryRecorderFilter
+                                                .value = options,
+                                          },
                                           child: Text(
-                                            value,
+                                            options == ""
+                                                ? "Semua Pencatat"
+                                                : options,
                                             style: const TextStyle(
                                               color: AppColors.text,
                                               fontSize: 14,
@@ -420,7 +425,7 @@ class _StudentPageState extends State<StudentPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
-                                  "Tanggal Mulai",
+                                  "Range Tanggal",
                                   style: TextStyle(
                                     color: AppColors.text,
                                     fontWeight: FontWeight.w500,
@@ -430,129 +435,141 @@ class _StudentPageState extends State<StudentPage> {
                                 const SizedBox(height: 5),
                                 SizedBox(
                                   width: double.infinity,
-                                  child: DropdownButtonHideUnderline(
-                                    child: DropdownButton2(
-                                      isExpanded: true,
-                                      buttonStyleData: ButtonStyleData(
-                                        padding:
-                                            const EdgeInsets.only(right: 10),
-                                        decoration: BoxDecoration(
-                                          color: AppColors.background,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                      ),
-                                      iconStyleData: const IconStyleData(
-                                        icon: Icon(
-                                          HugeIcons.strokeRoundedArrowDown01,
-                                          color: AppColors.textLight,
-                                        ),
-                                      ),
-                                      dropdownStyleData: DropdownStyleData(
-                                        decoration: BoxDecoration(
-                                          color: AppColors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.2),
-                                              spreadRadius: 1,
-                                              blurRadius: 5,
-                                              offset: const Offset(0, 2),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      style: const TextStyle(
-                                          color: AppColors.textLight,
-                                          fontSize: 14),
-                                      value: studentOption[0],
-                                      items: studentOption.map((String value) {
-                                        return DropdownMenuItem(
-                                          value: value,
-                                          child: Text(
-                                            value,
-                                            style: const TextStyle(
-                                              color: AppColors.text,
-                                              fontSize: 14,
+                                  height: 50,
+                                  child: TextButton(
+                                    onPressed: () async {
+                                      Get.dialog(Dialog(
+                                        backgroundColor: AppColors.white,
+                                        child: RangeDatePicker(
+                                          onRangeSelected: (value) => {
+                                            studentController
+                                                .temporaarySelectedDate
+                                                .value = value,
+                                            Get.back(),
+                                          },
+                                          currentDateTextStyle: const TextStyle(
+                                            color: AppColors.primary,
+                                            fontSize: 16,
+                                          ),
+                                          enabledCellsTextStyle:
+                                              const TextStyle(
+                                                  color: AppColors.text,
+                                                  fontSize: 16),
+                                          leadingDateTextStyle: const TextStyle(
+                                            color: AppColors.text,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                          selectedCellsDecoration:
+                                              BoxDecoration(
+                                            color:
+                                                AppColors.primary.withOpacity(
+                                              0.1,
                                             ),
                                           ),
-                                        );
-                                      }).toList(),
-                                      onChanged: (value) {},
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  "Tanggal Selesai",
-                                  style: TextStyle(
-                                    color: AppColors.text,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                const SizedBox(height: 5),
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: DropdownButtonHideUnderline(
-                                    child: DropdownButton2(
-                                      isExpanded: true,
-                                      buttonStyleData: ButtonStyleData(
-                                        padding:
-                                            const EdgeInsets.only(right: 10),
-                                        decoration: BoxDecoration(
-                                          color: AppColors.background,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                      ),
-                                      iconStyleData: const IconStyleData(
-                                        icon: Icon(
-                                          HugeIcons.strokeRoundedArrowDown01,
-                                          color: AppColors.textLight,
-                                        ),
-                                      ),
-                                      dropdownStyleData: DropdownStyleData(
-                                        decoration: BoxDecoration(
-                                          color: AppColors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.2),
-                                              spreadRadius: 1,
-                                              blurRadius: 5,
-                                              offset: const Offset(0, 2),
+                                          singelSelectedCellDecoration:
+                                              const BoxDecoration(
+                                            color: AppColors.primary,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          selectedCellsTextStyle:
+                                              const TextStyle(
+                                            color: AppColors.text,
+                                            fontSize: 16,
+                                          ),
+                                          currentDateDecoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: AppColors.primary,
+                                              width: 2,
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                      style: const TextStyle(
-                                          color: AppColors.textLight,
-                                          fontSize: 14),
-                                      value: studentOption[0],
-                                      items: studentOption.map((String value) {
-                                        return DropdownMenuItem(
-                                          value: value,
-                                          child: Text(
-                                            value,
-                                            style: const TextStyle(
-                                              color: AppColors.text,
-                                              fontSize: 14,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          padding: const EdgeInsets.all(20),
+                                          daysOfTheWeekTextStyle:
+                                              const TextStyle(
+                                                  fontSize: 14,
+                                                  color: AppColors.text,
+                                                  fontWeight: FontWeight.w500),
+                                          maxDate: DateTime.now().add(
+                                            const Duration(
+                                              days: 365,
                                             ),
                                           ),
-                                        );
-                                      }).toList(),
-                                      onChanged: (value) {},
+                                          minDate: DateTime.now().subtract(
+                                            const Duration(
+                                              days: 365,
+                                            ),
+                                          ),
+                                        ),
+                                      ));
+                                    },
+                                    style: ButtonStyle(
+                                      shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                        AppColors.background,
+                                      ),
+                                      overlayColor: MaterialStateProperty.all(
+                                        AppColors.primary.withOpacity(0.05),
+                                      ),
                                     ),
+                                    child: Obx(() => studentController
+                                                .temporaarySelectedDate.value ==
+                                            null
+                                        ? const Text(
+                                            "Pilih Tanggal",
+                                            style: TextStyle(
+                                              color: AppColors.primary,
+                                              fontSize: 14,
+                                            ),
+                                          )
+                                        : Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  DateFormat('dd MMMM yyyy')
+                                                      .format(studentController
+                                                          .temporaarySelectedDate
+                                                          .value!
+                                                          .start),
+                                                  style: const TextStyle(
+                                                    color: AppColors.text,
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 10),
+                                                const Icon(
+                                                  HugeIcons
+                                                      .strokeRoundedArrowRight01,
+                                                  color: AppColors.textLight,
+                                                ),
+                                                const SizedBox(width: 10),
+                                                Text(
+                                                  DateFormat('dd MMMM yyyy')
+                                                      .format(
+                                                    studentController
+                                                        .temporaarySelectedDate
+                                                        .value!
+                                                        .end,
+                                                  ),
+                                                  style: const TextStyle(
+                                                    color: AppColors.text,
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          )),
                                   ),
                                 ),
                               ],
@@ -560,7 +577,6 @@ class _StudentPageState extends State<StudentPage> {
                           ],
                         ),
                 ),
-                const SizedBox(height: 25),
                 const Spacer(),
                 SizedBox(
                   width: double.infinity,
@@ -571,12 +587,17 @@ class _StudentPageState extends State<StudentPage> {
                           studentController.temporaryClassFilter.value;
                       studentController.genderFilter.value =
                           studentController.temporaryGenderFilter.value;
+                      studentController.recorderFilter.value =
+                          studentController.temporaryRecorderFilter.value;
+                      studentController.selectedDate.value =
+                          studentController.temporaarySelectedDate.value;
+
                       studentController.fetchAllStudent();
+                      studentController.fetchAllStar();
                     },
                     style: TextButton.styleFrom(
                       backgroundColor: AppColors.primary,
-                      padding:
-                          const EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 20),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
