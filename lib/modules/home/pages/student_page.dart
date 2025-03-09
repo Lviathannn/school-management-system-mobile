@@ -352,7 +352,7 @@ class _StudentPageState extends State<StudentPage> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       const Text(
-                                        "Status",
+                                        "Tipe Tabungan",
                                         style: TextStyle(
                                           color: AppColors.text,
                                           fontWeight: FontWeight.w500,
